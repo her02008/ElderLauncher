@@ -201,10 +201,3 @@ export JAVA_HOME=/c/Users/ruok/.jdks/jbr-21.0.11
   `core.sshCommand`，直接 `git push` 即可；换机器克隆时要自己加这条。
 - `.gitignore` 已排除 build/local.properties/签名文件/`server/node/data/`；
   `.workbuddy/` 只放行 `memory/`。`.gitattributes` = `* text=auto eol=lf`。
-
-## Git
-- 远程 `git@github.com:her02008/OlderHelperLauncher.git`，默认分支 `main`。
-- **本机必须走 `ssh.github.com:443`**：`github.com:22` 时通时拒。已写进仓库配置
-  `core.sshCommand`，直接 `git push` 即可；换机器克隆时要自己加这条。
-- `.gitignore` 已排除 build/local.properties/签名文件/`server/node/data/`；
-  `.workbuddy/` 只放行 `memory/`。`.gitattributes` = `* text=auto eol=lf`。
