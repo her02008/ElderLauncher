@@ -39,8 +39,6 @@ Thumbs.db
 *.log
 
 # ---------------- 工具工作区 ----------------
-# .workbuddy 里只保留沉淀下来的项目记忆，其余（会话缓存等）不入库
-.workbuddy/*
-!.workbuddy/memory/
-!.workbuddy/memory/**
+# .workbuddy 是本地 AI 助手的工作区（会话缓存、项目记忆），属于个人本地数据，一律不入库
+.workbuddy/
 app/release/

@@ -1,0 +1,93 @@
+name: Build APK
+
+# 什么时候跑：
+#   1. push 到 main（含合并）
+#   2. 有人提 PR 到 main（只编译、不产出安装包给别人用，但 artifact 仍然可下载来验）
+#   3. 在 GitHub 网页上手动点「Run workflow」——想临时出一个包就用这个
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# 同一个分支连续 push 时，取消上一个还在跑的构建，省额度
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: assembleDebug
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      # JDK 17：AGP 8.2 的硬性要求（17 或 21 都行，别用 25，Gradle 8.5 不认）
+      - name: 准备 JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # 项目里没有提交 gradle-wrapper.jar（只提交了 gradle-wrapper.properties），
+      # 所以这里让 action 自己下 Gradle 8.5，并顺便把 ~/.gradle 缓存接好。
+      - name: 准备 Gradle 8.5
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.5'
+
+      # ubuntu-latest 自带 Android SDK（ANDROID_HOME 已设置，android-34 已装好），
+      # 仓库里没有 local.properties，Gradle 会走 ANDROID_HOME，不用额外配置。
+      - name: 打印环境
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME/platforms"
+          java -version
+
+      # 注意：app/build.gradle.kts 会在打包类任务开始时把 version.properties 的
+      # versionCode / versionName 各 +1 并写回文件。CI 里工作区是临时的，
+      # 写回不会污染仓库，正好用它来给产物命名。
+      - name: 编译 Debug APK
+        run: gradle assembleDebug --console=plain --no-daemon --stacktrace
+
+      - name: 读取产物版本号
+        id: ver
+        run: |
+          VC=$(grep -E '^versionCode=' version.properties | cut -d= -f2 | tr -d '\r\n ')
+          VN=$(grep -E '^versionName=' version.properties | cut -d= -f2 | tr -d '\r\n ')
+          echo "code=$VC" >> "$GITHUB_OUTPUT"
+          echo "name=$VN" >> "$GITHUB_OUTPUT"
+          echo "本次产物：v$VN ($VC)"
+
+      - name: 归档产物
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/debug/app-debug.apk \
+             "out/elderlauncher-v${{ steps.ver.outputs.name }}-debug.apk"
+          ls -lh out
+
+      - name: 上传 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: elderlauncher-debug-v${{ steps.ver.outputs.name }}
+          path: out/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      # 顺手把编译日志里最关键的几行贴到 summary，失败时一眼能看出是哪儿挂的
+      - name: 写构建摘要
+        if: always()
+        run: |
+          {
+            echo "### 构建结果：${{ job.status }}"
+            echo ""
+            echo "- 版本：v${{ steps.ver.outputs.name }} (${{ steps.ver.outputs.code }})"
+            echo "- 提交：\`${{ github.sha }}\`"
+            echo "- 触发：${{ github.event_name }}"
+          } >> "$GITHUB_STEP_SUMMARY"
