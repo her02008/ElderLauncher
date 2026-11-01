@@ -249,6 +249,7 @@ version.properties             版本号唯一来源
 
 | 文档 | 内容 |
 |------|------|
+| [`docs/engineering-notes.md`](docs/engineering-notes.md) | **改代码前先看**：硬约束、模块要点、踩过的坑、自检清单 |
 | [`docs/remote-config-protocol.md`](docs/remote-config-protocol.md) | 远程设置的协议契约，改协议先改它 |
 | [`docs/design-voice-alive.md`](docs/design-voice-alive.md) | 语音命令的拼音匹配与「恰了么」状态机 |
 | [`server/README.md`](server/README.md) | 服务端部署手册 |
