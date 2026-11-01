@@ -58,7 +58,18 @@
 
 ## 三、编译
 
-### 用 GitHub Actions（推荐，不装环境）
+### 直接下载安装包（Release，推荐）
+
+**不用打开 Actions，固定链接，手机浏览器点开就能下，不需要登录 GitHub：**
+
+```
+https://github.com/her02008/ElderLauncher/releases/download/latest/elderlauncher-latest-debug.apk
+```
+
+这个链接永远指向 `main` 上最新一次自动构建，每次 push 都会覆盖更新。新版想下载就去
+[Releases](https://github.com/her02008/ElderLauncher/releases) 页面点 `latest` 那一栏。
+
+### 用 GitHub Actions 自己编（不装环境）
 
 仓库自带 [`.github/workflows/build-apk.yml`](.github/workflows/build-apk.yml)：
 
@@ -66,7 +77,30 @@
 2. 等 2~4 分钟，进这次运行页面最下方 **Artifacts** 下载 `elderlauncher-debug-vX.Y.Z`
 3. 解压得到 `elderlauncher-vX.Y.Z-debug.apk`，传到手机安装
 
-push 到 `main` 也会自动跑一次，产物保留 30 天。
+> artifact 和 Release 的区别：artifact 只在 Actions 运行记录里、**必须登录 GitHub 才能下载**、
+> 30 天过期；Release 里的 APK 是公开直链、永久保留。所以包做出来会自动同步一份到 Release。
+
+### 发一个正式版（可选）
+
+日常的 `latest` 是「最新构建」，会不断被覆盖，不适合留给老人长期用。要发一个固定版本：
+
+```bash
+# 1. 把版本号改成你要发的版本（CI 打 tag 时不会自增，装的版本 = 文件里的版本）
+#    version.properties: versionCode=48  versionName=1.0.47
+# 2. 提交
+git commit -am "release: v1.0.47"
+# 3. 打 tag 并推
+git tag v1.0.47
+git push origin main v1.0.47
+```
+
+推上去后会自动建一个 `v1.0.47` 的正式 Release，里面挂
+`elderlauncher-v1.0.47-debug.apk`，链接永久有效，也会被标成 Latest。
+
+**为什么不自动 +1**：tag `v1.0.47` 里装出来是 1.0.48 会很难对账，所以 tag 构建会跳过
+`version.properties` 的自增（`ELDER_NO_VERSION_BUMP=1`），装的版本就是文件里写的版本。
+本地想临时关掉自增：`gradle assembleDebug -PnoVersionBump`。
+
 
 ### 本地编译
 

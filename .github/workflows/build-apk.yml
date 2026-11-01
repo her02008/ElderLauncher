@@ -1,23 +1,31 @@
 name: Build APK
 
 # 什么时候跑：
-#   1. push 到 main（含合并）
-#   2. 有人提 PR 到 main（只编译、不产出安装包给别人用，但 artifact 仍然可下载来验）
-#   3. 在 GitHub 网页上手动点「Run workflow」——想临时出一个包就用这个
+#   1. push 到 main          → 编译 + 更新 Release 里的「latest」预发布（固定链接下最新包）
+#   2. push tag v*           → 编译 + 建一个正式 Release（该 tag 下挂 APK）
+#   3. 提 PR 到 main         → 只编译、只留 artifact，不碰 Release
+#   4. 网页手动 Run workflow → 默认也更新「latest」，可以取消勾选只留 artifact
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      publish:
+        description: 把这次构建发布到 Release（latest）
+        type: boolean
+        default: true
 
-# 同一个分支连续 push 时，取消上一个还在跑的构建，省额度
+# 同一个 ref 连续 push 时取消上一次，省额度。注意 tag 和分支的 group 是分开的。
 concurrency:
   group: build-apk-${{ github.ref }}
   cancel-in-progress: true
 
+# 默认 token 只有读权限，发 Release 必须显式要 contents: write
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -50,11 +58,15 @@ jobs:
           ls "$ANDROID_HOME/platforms"
           java -version
 
-      # 注意：app/build.gradle.kts 会在打包类任务开始时把 version.properties 的
-      # versionCode / versionName 各 +1 并写回文件。CI 里工作区是临时的，
-      # 写回不会污染仓库，正好用它来给产物命名。
+      # 日常构建（main / PR / 手动）：version.properties 自动 +1，写回只发生在 runner 上，不污染仓库。
+      # tag 构建：跳过自增，保证 tag v1.0.47 里装出来就是 1.0.47，不会莫名滚成 1.0.48。
       - name: 编译 Debug APK
-        run: gradle assembleDebug --console=plain --no-daemon --stacktrace
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            export ELDER_NO_VERSION_BUMP=1
+            echo "tag 构建，跳过版本号自增"
+          fi
+          gradle assembleDebug --console=plain --no-daemon --stacktrace
 
       - name: 读取产物版本号
         id: ver
@@ -65,11 +77,13 @@ jobs:
           echo "name=$VN" >> "$GITHUB_OUTPUT"
           echo "本次产物：v$VN ($VC)"
 
+      # 生成两份：带版本号的那份用来留档，固定名字的那份给 Release 提供永久下载链接
       - name: 归档产物
         run: |
           mkdir -p out
-          cp app/build/outputs/apk/debug/app-debug.apk \
-             "out/elderlauncher-v${{ steps.ver.outputs.name }}-debug.apk"
+          SRC=app/build/outputs/apk/debug/app-debug.apk
+          cp "$SRC" "out/elderlauncher-v${{ steps.ver.outputs.name }}-debug.apk"
+          cp "$SRC" "out/elderlauncher-latest-debug.apk"
           ls -lh out
 
       - name: 上传 artifact
@@ -80,7 +94,60 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      # 顺手把编译日志里最关键的几行贴到 summary，失败时一眼能看出是哪儿挂的
+      # ---------- 发布到 Release ----------
+      # artifact 需要登录 GitHub 才能下载，Release 里的 asset 是公开直链，发给家人也能直接下。
+
+      # 正式版：push 一个 v 开头的 tag 就走这里
+      - name: 发布正式版 Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: 长辈助手 ${{ github.ref_name }}
+          body: |
+            ## 长辈助手 ${{ github.ref_name }}
+
+            - 构建版本：`${{ steps.ver.outputs.name }}`（versionCode ${{ steps.ver.outputs.code }}）
+            - 提交：`${{ github.sha }}`
+            - 构建时间：${{ github.event.head_commit.timestamp }}
+
+            > Debug 签名包，可直接安装。这是**正式版**，所以打的是 `${{ github.ref_name }}` 这个 tag。
+          files: out/*.apk
+          draft: false
+          prerelease: false
+          make_latest: true
+          overwrite_files: true
+
+      # 最新构建：main 的每次 push（或手动勾了 publish）都把同一个「latest」预发布顶上去，
+      # 不会在 Releases 里堆一堆记录，下载链接也永远不变。
+      - name: 更新 latest 预发布
+        if: |
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'true')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          target_commitish: ${{ github.sha }}
+          name: 最新构建（latest）
+          body: |
+            ## 最新构建
+
+            这是 `main` 分支自动编译的 Debug 包，**每次 push 都会被覆盖更新**，不适合留档。
+
+            - 构建版本：`${{ steps.ver.outputs.name }}`（versionCode ${{ steps.ver.outputs.code }}）
+            - 提交：`${{ github.sha }}`
+            - 构建时间：${{ github.event.head_commit.timestamp }}
+
+            **固定下载链接**（永远指向最新一次构建）：
+
+            https://github.com/${{ github.repository }}/releases/download/latest/elderlauncher-latest-debug.apk
+          files: out/*.apk
+          draft: false
+          prerelease: true
+          make_latest: false
+          overwrite_files: true
+
+      # 顺手把关键信息贴到 summary，失败时一眼能看出是哪儿挂的
       - name: 写构建摘要
         if: always()
         run: |
@@ -89,5 +156,5 @@ jobs:
             echo ""
             echo "- 版本：v${{ steps.ver.outputs.name }} (${{ steps.ver.outputs.code }})"
             echo "- 提交：\`${{ github.sha }}\`"
-            echo "- 触发：${{ github.event_name }}"
+            echo "- 触发：${{ github.event_name }} / ${{ github.ref }}"
           } >> "$GITHUB_STEP_SUMMARY"

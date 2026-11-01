@@ -43,7 +43,12 @@ val wantsPackage = gradle.startParameter.taskNames.any { task ->
 var autoVersionCode = versionProps.getProperty("versionCode")?.trim()?.toIntOrNull() ?: 0
 var autoVersionName = versionProps.getProperty("versionName")?.trim().orEmpty().ifEmpty { "1.0.0" }
 
-if (wantsPackage) {
+// 发正式版（打 tag）时不希望版本号被偷偷 +1，否则 tag v1.0.47 里装出来是 1.0.48。
+// CI 的 tag 构建会带 ELDER_NO_VERSION_BUMP=1；本地也可以用 -PnoVersionBump 临时关掉。
+val skipVersionBump = System.getenv("ELDER_NO_VERSION_BUMP") == "1" ||
+    gradle.startParameter.projectProperties.containsKey("noVersionBump")
+
+if (wantsPackage && !skipVersionBump) {
     autoVersionCode += 1
     autoVersionName = bumpPatch(autoVersionName)
     // 连同说明一起写回，别让注释被冲掉
@@ -54,6 +59,8 @@ if (wantsPackage) {
             "versionName=$autoVersionName\n"
     )
     logger.lifecycle("[version] 本次构建版本：$autoVersionName ($autoVersionCode)，已回写 version.properties")
+} else if (wantsPackage) {
+    logger.lifecycle("[version] 已跳过自增（NO_VERSION_BUMP），本次构建版本：$autoVersionName ($autoVersionCode)")
 }
 
 android {
