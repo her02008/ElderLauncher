@@ -193,3 +193,37 @@ gradle assembleDebug --console=plain  # 仓库没提交 gradle-wrapper.jar
 3. 动到色块/密码：删光色块重启、连错 3 次密码、`*#0454#*` 重置两条路都走一遍。
 4. 动到远程：多子女同时下发、断网重连、危险指令 24 小时作废。
 5. 动到 `app/build.gradle.kts`：确认 `version.properties` 递增后 CI 仍能解析。
+
+---
+
+## 八、换环境 / 远程继续维护
+
+这个项目被刻意做成「编译和发版都不依赖某台机器」，换环境成本很低：
+
+| 环节 | 依赖 | 换机器要做什么 |
+|------|------|----------------|
+| 编译 & 出包 | GitHub Actions | 什么都不用装，push 就有包 |
+| 发版 | GitHub Releases | 网页上点一下（或 push 一个 tag） |
+| 改代码 | 一份 git 工作区 | clone 下来即可；本地编译要 JDK 17/21 + SDK 34 |
+| 签名 | 仓库内 `signing/elder-launcher.jks` | 天然一致，不会签出不同的包 |
+
+**新环境起步**：
+
+```bash
+git clone git@github.com:her02008/ElderLauncher.git
+export JAVA_HOME=/path/to/jdk-17          # 别用 25
+gradle assembleDebug --console=plain     # 或用 Android Studio 直接打开
+```
+
+`local.properties`（`sdk.dir`）不入库，Android Studio 打开时会自动生成。
+若某台机器 `github.com:22` 时通时拒，可参考本仓库历史做法走 `ssh.github.com:443`。
+
+**手机上远程改代码**：WorkBuddy 的「微信客服号集成」可以让手机微信直接给电脑上的 WorkBuddy 下指令
+（右上角头像 → 助理设置 → 微信客服号集成 → 扫码绑定）。执行发生在**你自己的电脑上**，用的就是本机的
+项目文件、Shell 和 git 凭证，所以 push 不需要重新配 SSH key。前置条件是电脑开机、WorkBuddy 在运行；
+远程任务固定使用「助理」专属文件夹作为工作目录，项目不在那儿时在指令里给绝对路径。
+
+> 因为编译在 CI，远程改完只要 push，剩下等 Actions 出包即可，不必在本机等几分钟编译。
+> 唯一的本地依赖是「电脑要开着」；完全不依赖本机的做法是企业智能体（云端 Linux 沙箱 + Git 仓库工作区），
+> 但那是企业坐席功能。
+
