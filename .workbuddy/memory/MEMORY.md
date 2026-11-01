@@ -194,3 +194,10 @@ export JAVA_HOME=/c/Users/ruok/.jdks/jbr-21.0.11
 - 透明 Activity：继承 `android.app.Activity`（不能 AppCompatActivity）或 BaseActivity + `@style/Theme.Elder.Translucent`；此时**千万不要配 screenOrientation**（Android 8 抛「Only fullscreen opaque activities can request orientation」）。
 - 两个 Gradle 并发会损坏 Kotlin 增量缓存 → `gradle --stop` + 删 `app/build/kotlin`。
 - 确认平台常量：`unzip -p <sdk>/platforms/android-34/android.jar android/provider/Settings.class | grep -ao "ACTION_[A-Z_]*DATA[A-Z_]*"`。
+
+## Git
+- 远程 `git@github.com:her02008/OlderHelperLauncher.git`，默认分支 `main`。
+- **本机必须走 `ssh.github.com:443`**：`github.com:22` 时通时拒。已写进仓库配置
+  `core.sshCommand`，直接 `git push` 即可；换机器克隆时要自己加这条。
+- `.gitignore` 已排除 build/local.properties/签名文件/`server/node/data/`；
+  `.workbuddy/` 只放行 `memory/`。`.gitattributes` = `* text=auto eol=lf`。
