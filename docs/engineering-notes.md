@@ -218,12 +218,13 @@ gradle assembleDebug --console=plain     # 或用 Android Studio 直接打开
 `local.properties`（`sdk.dir`）不入库，Android Studio 打开时会自动生成。
 若某台机器 `github.com:22` 时通时拒，可参考本仓库历史做法走 `ssh.github.com:443`。
 
-**手机上远程改代码**：WorkBuddy 的「微信客服号集成」可以让手机微信直接给电脑上的 WorkBuddy 下指令
-（右上角头像 → 助理设置 → 微信客服号集成 → 扫码绑定）。执行发生在**你自己的电脑上**，用的就是本机的
-项目文件、Shell 和 git 凭证，所以 push 不需要重新配 SSH key。前置条件是电脑开机、WorkBuddy 在运行；
-远程任务固定使用「助理」专属文件夹作为工作目录，项目不在那儿时在指令里给绝对路径。
+**手机上完全不依赖电脑改代码**：用 WorkBuddy 移动端 App 的 **☁️ 云端工作**模式（云端 Linux 沙箱），
+clone → 改 → commit → push 到 `feat/` 分支 → 开 PR，CI 在 PR 上编译，绿灯再合并。
+沙箱是全新的、没有本机 SSH key，所以 push 只能走 **HTTPS + 短期 PAT**（单仓库、7 天、`Contents: Read and write`）；
+沙箱里**没有 Android SDK，不要尝试 `assembleDebug`**，编译一律交给 CI。
+详细步骤、提示词模板、已知坑见 [`docs/mobile-cloud-workflow.md`](mobile-cloud-workflow.md)。
 
-> 因为编译在 CI，远程改完只要 push，剩下等 Actions 出包即可，不必在本机等几分钟编译。
-> 唯一的本地依赖是「电脑要开着」；完全不依赖本机的做法是企业智能体（云端 Linux 沙箱 + Git 仓库工作区），
-> 但那是企业坐席功能。
+> 另有一条「🖥 连接电脑」模式（含微信客服号 / 助理）：执行发生在你自己电脑上，本机环境与 git 凭证直接可用，
+> push 不用配 token，但**电脑必须开机且 WorkBuddy 在运行**，远程任务固定使用「助理」专属文件夹作为工作目录。
+> 需要真机调试、看本机日志时才用它。
 
