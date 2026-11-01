@@ -141,7 +141,8 @@ jobs:
             **固定下载链接**（永远指向最新一次构建）：
 
             https://github.com/${{ github.repository }}/releases/download/latest/elderlauncher-latest-debug.apk
-          files: out/*.apk
+          # 只传固定名那一个：latest 每次都被覆盖，别让带版本号的旧包在这里越堆越多
+          files: out/elderlauncher-latest-debug.apk
           draft: false
           prerelease: true
           make_latest: false
