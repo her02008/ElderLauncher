@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  主页。三大区域（紧急求助 / 功能色块 / 快捷拨号）各自包成一个独立的 LinearLayout，
+  运行时由 MainActivity.applySectionOrder() 按「设置 → 首页板块顺序」重新排列（顺序存在 home_order 里）。
+  注意：不要改动这三个 section 的 id，也不要在它们外面再包一层，否则换位逻辑会失效。
+-->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/bg_main">
+
+    <LinearLayout
+        android:id="@+id/homeRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 顶部固定区：时间 / 日期 + 右上角设置按钮 -->
+        <FrameLayout
+            android:id="@+id/headerRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/topBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="80dp"
+                android:paddingBottom="16dp">
+
+                <!--
+                  时间点一下开系统时钟、日期点一下开系统日历（MainActivity 绑监听）。
+                  paddingStart 4dp + 这里 12dp = 原来的 16dp 左边距，视觉上不动；
+                  这点 padding 是给点击区域留的（顶部区域本身宽 4dp 的 ripple 看不出来）。
+                -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextClock
+                        android:id="@+id/clockTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:format12Hour="HH:mm"
+                        android:format24Hour="HH:mm"
+                        android:textSize="@dimen/title_normal"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="4dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:textSize="@dimen/font_normal"
+                        android:textColor="@color/text_secondary"
+                        tools:text="9月30日 星期三" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnSettings"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="end|top"
+                android:layout_margin="12dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_settings"
+                android:scaleType="centerInside"
+                android:tint="@color/text_primary"
+                android:contentDescription="@string/settings_title" />
+        </FrameLayout>
+
+        <!-- 区域 ①：紧急求助 -->
+        <LinearLayout
+            android:id="@+id/sectionSos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnSos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:minHeight="64dp"
+                android:background="@drawable/bg_sos_btn"
+                android:text="@string/act_sos"
+                android:textColor="@color/text_white"
+                android:textSize="@dimen/btn_label_xlarge"
+                android:textStyle="bold"
+                android:stateListAnimator="@null" />
+        </LinearLayout>
+
+        <!-- 区域 ②：功能色块（九宫格） -->
+        <LinearLayout
+            android:id="@+id/sectionGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/gridActions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_home_button" />
+        </LinearLayout>
+
+        <!-- 区域 ③：快捷拨号 -->
+        <LinearLayout
+            android:id="@+id/sectionQuick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/tvQuickTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/quick_empty"
+                android:textSize="@dimen/font_normal"
+                android:textColor="@color/text_secondary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listQuick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="20dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_quick_contact" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

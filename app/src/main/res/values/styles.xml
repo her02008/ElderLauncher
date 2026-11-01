@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.ElderLauncher" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryVariant">@color/btn_reboot</item>
+        <item name="colorOnPrimary">@color/text_white</item>
+        <item name="android:windowBackground">@color/bg_main</item>
+        <item name="android:statusBarColor">@color/bg_main</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!--
+      只在别人 App 上盖一层确认对话框的页面（接收「添加到桌面」请求的 ShortcutPinActivity）。
+      必须是 AppCompat 系主题才能配 AppCompatActivity（继承 BaseActivity 才有长辈字号缩放），
+      所以这里从 MaterialComponents 派生再打开半透明，而不是用 @android:style/Theme.Translucent.NoTitleBar。
+    -->
+    <style name="Theme.Elder.Translucent" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorOnPrimary">@color/text_white</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="ElderText" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!--
+      高级设置的功能入口三件套：
+      入口行 = 彩色图标 + 加粗标题（可点、带波纹）；状态行小字跟随标题；
+      提示说明 = 浅灰圆角框里的小字（AdminHintBox），一眼就能和入口分开。
+    -->
+    <style name="AdminEntryRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="AdminEntryIcon">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="AdminEntryTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="AdminEntryState">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="AdminHintBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@drawable/bg_hint_box</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="HomeButtonCard">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@drawable/bg_card_round</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <!-- 拨号盘数字键：撑满格子的大白键 -->
+    <style name="DialKey">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">@drawable/bg_key</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- 删除 / 清空 -->
+    <style name="DialActionKey">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">@drawable/bg_key</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+</resources>

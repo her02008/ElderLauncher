@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/icon_normal"
+            android:layout_height="@dimen/icon_normal"
+            android:scaleType="fitCenter"
+            android:importantForAccessibility="no"
+            tools:src="@drawable/ic_phone" />
+
+        <!--
+            单行显示：文字放得下就居中不动，放不下时由 bindBlockCell 打开跑马灯左右滚动，
+            这样名字再长也能看全，不会出现「显示不全」的省略号。
+        -->
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/btn_label_normal"
+            android:textStyle="bold"
+            tools:text="拨打电话" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:text="@string/block_sub_badge"
+        android:textColor="@color/text_white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:importantForAccessibility="no"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</FrameLayout>

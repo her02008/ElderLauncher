@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!--
+      跌倒检测的自动接听：家人看到预警短信回拨时，自动接起让家人听到现场情况。
+      API 26+ 的运行时权限；被拒时降级为模拟耳机接听键（部分机型可用）。
+    -->
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- 视频号分享链接中转页（ChannelsBridgeActivity）要加载微信的 H5 页 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 语音交互：录一句命令 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--
+      「恰了么？」的定时检查必须在 Doze 下也能醒来，否则 WorkManager 会被推迟几小时到一天，
+      24 小时的阈值实际可能 30 小时才触发。
+      Android 12+ 要这个权限才能排精确闹钟；拿不到时降级为 setAndAllowWhileIdle（不精确但能跑）。
+      不声明 USE_EXACT_ALARM：那是给系统闹钟类应用的，普通应用声明会触发商店审核。
+    -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+    <!-- 有的手机没有麦克风（极少数），有就用，没有就别装 -->
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
+    <!--
+      允许明文 HTTP，只为一件事：家里 NAS 还没配域名/证书时，用局域网 IP 直接调试远程设置。
+      真正的闸门在代码里——`RemoteClient.normalizeEndpoint()` 对**公网地址强制要求 https**，
+      明文只放行 localhost / 10.x / 192.168.x / 172.16-31.x。别把这层判断删掉。
+    -->
+    <application
+        android:name=".ElderApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ElderLauncher"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true">
+            <!-- 手机桌面：注册 HOME + DEFAULT，用户可在「默认应用」里把它选为主屏幕应用 -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".HomeBlocksActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".QuickDialsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
+            android:name=".HomeOrderActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
+            android:name=".WxMiniActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".SettingsActivity" />
+
+        <!-- 视频号分享链接的隐形中转页：加载 H5 自动点「打开微信」，不留任务记录 -->
+        <activity
+            android:name=".ChannelsBridgeActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--
+          「添加到桌面」的接收端：别家 App 调 requestPinShortcut() 时，系统会在**默认桌面**里
+          找声明了这个 action 的 Activity 并拉起它。少了它，微信/浏览器的「发送到桌面」会静默失败
+          （系统日志：Launcher doesn't support requestPinnedShortcut()）。
+          系统要求：必须是默认桌面应用里的 Activity，且 exported 才能被系统拉起。
+          注意：这里**不要**加 screenOrientation —— 半透明窗口 + 固定方向在 Android 8.0 上会抛
+          「Only fullscreen opaque activities can request orientation」。
+        -->
+        <activity
+            android:name=".ShortcutPinActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.Elder.Translucent">
+            <intent-filter>
+                <action android:name="android.content.pm.action.CONFIRM_PIN_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ChannelsLinkActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".SettingsActivity" />
+
+        <!-- 管理密码页（高级功能的门）与高级设置聚合页 -->
+        <activity
+            android:name=".PasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".SettingsActivity" />
+
+        <!-- 远程设置：把手机绑到家属自己的服务端（协议见 docs/remote-config-protocol.md） -->
+        <activity
+            android:name=".RemoteActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".AdminActivity" />
+
+        <activity
+            android:name=".SosActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- 全屏语音页：点一下说话，说完自动结束 -->
+        <activity
+            android:name=".VoiceActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+
+        <!--
+          跌倒检测的提醒页：通过通知的 fullScreenIntent 从后台拉起，
+          必须声明 showWhenLocked / turnScreenOn 才能在锁屏、熄屏上弹出来。
+          不要加 screenOrientation（半透明/特殊窗口 + 固定方向在 Android 8 上会崩）。
+        -->
+        <activity
+            android:name=".FallActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.Elder.Translucent" />
+
+        <activity
+            android:name=".ContactsPickerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".DialActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" />
+
+        <service
+            android:name=".service.ElderAccessibilityService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!--
+          未接来电提醒：系统只把通知投给「通知使用权」列表里勾选的监听服务。
+          android:label 会原样显示在系统那个列表里，写清楚一点，家属才知道勾哪个。
+        -->
+        <service
+            android:name=".service.MissedCallListenerService"
+            android:exported="true"
+            android:label="@string/missed_listener_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".receiver.ElderDeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_policies" />
+        </receiver>
+
+        <receiver android:name=".receiver.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 「恰了么？」的定时检查（AlarmManager 每 1 小时一次，自己续排） -->
+        <receiver
+            android:name=".receiver.AliveAlarmReceiver"
+            android:exported="false" />
+
+    </application>
+</manifest>

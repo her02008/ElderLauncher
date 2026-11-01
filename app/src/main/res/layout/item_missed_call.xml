@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 未接来电弹窗里的一行：头像 + 名字 + 时间，右侧绿色回拨按钮（一个人时隐藏按钮，改用底部大按钮） -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/rowMissedAvatar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:importantForAccessibility="no"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rowMissedName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_large"
+            android:textStyle="bold"
+            tools:text="儿子" />
+
+        <TextView
+            android:id="@+id/rowMissedTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            tools:text="10:32 · 共 2 次" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/btnMissedRowCall"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_call_btn"
+        android:clickable="true"
+        android:contentDescription="@string/missed_call_back"
+        android:focusable="true"
+        android:padding="14dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_phone" />
+
+</LinearLayout>

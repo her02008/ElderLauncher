@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">长辈助手</string>
+
+    <string name="act_phone">拨打电话</string>
+    <string name="act_contacts">通讯录</string>
+    <string name="act_douyin">抖音</string>
+    <string name="act_wxapp">微信小程序</string>
+    <string name="act_clean">清理后台</string>
+    <string name="act_reboot">重启手机</string>
+    <string name="act_torch">手电筒</string>
+    <string name="act_wifi">无线网</string>
+    <string name="act_data">移动流量</string>
+    <string name="act_sos">紧急求助</string>
+    <string name="act_settings">设置</string>
+
+    <string name="torch_on">手电筒已打开</string>
+    <string name="torch_off">手电筒已关闭</string>
+    <string name="wifi_on">无线网已打开</string>
+    <string name="wifi_off">无线网已关闭</string>
+    <string name="data_hint">已跳到流量设置，请点开关</string>
+    <string name="clean_done">已清理后台进程</string>
+    <string name="reboot_confirm">确定要重启手机吗？</string>
+    <string name="clean_confirm">确定要清理后台吗？</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+
+    <string name="sos_title">紧急求助</string>
+    <string name="sos_calling">正在呼叫紧急联系人</string>
+    <string name="sos_sms_sent">已向紧急联系人发送求助短信</string>
+    <string name="sos_no_contact">尚未设置紧急联系人，请先到设置中配置</string>
+    <string name="sos_locating">正在获取位置…</string>
+
+    <string name="settings_title">设置</string>
+    <string name="settings_font">字体大小</string>
+    <string name="settings_font_normal">标准</string>
+    <string name="settings_font_large">大</string>
+    <string name="settings_font_xlarge">超大</string>
+    <string name="settings_sos_contact">紧急联系人</string>
+    <string name="settings_sos_contact_none">未设置</string>
+    <string name="settings_voice">语音播报</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_about_version">长辈助手 v%1$s（构建 %2$d）\n为长辈定制的快捷启动器</string>
+
+    <string name="perm_need">需要权限才能使用此功能</string>
+    <string name="perm_open_settings">去设置开启</string>
+    <string name="accessibility_desc">长辈助手无障碍服务：用于清理后台应用、辅助重启，以及自动打开微信视频号。本服务不会读取或上传您的屏幕内容。</string>
+    <string name="device_admin_desc">用于锁屏与重启相关能力，仅在本应用内使用。</string>
+
+    <string name="quick_add">添加常用联系人</string>
+    <string name="quick_empty">点击添加家人快捷拨号</string>
+    <string name="quick_title_manage">快捷拨号（点这里管理）</string>
+    <string name="contact_pick">从通讯录选择</string>
+    <string name="contact_remove">移除</string>
+
+    <!-- 设置 → 快捷拨号（子菜单） -->
+    <string name="settings_quick_dials">快捷拨号</string>
+    <string name="settings_quick_dials_hint">添加家人快捷拨号，头像可以用图片或颜色</string>
+    <string name="settings_quick_dials_none">未设置</string>
+    <string name="settings_quick_dials_count">已设置 %1$d 个</string>
+
+    <string name="quick_dials_title">快捷拨号</string>
+    <string name="quick_dials_hint">已设置 %1$d/%2$d 个，主页横排按这个顺序显示\n按住一行拖动可排序，也可以用 ↑ ↓ 微调\n点开一行可以「试听播报」，听听主页会念什么</string>
+    <string name="quick_dial_add">添加快捷拨号</string>
+    <string name="quick_dial_add_title">怎么添加？</string>
+    <string name="quick_dial_add_contact">从通讯录选择</string>
+    <string name="quick_dial_add_manual">手动输入号码</string>
+    <string name="quick_dial_edit_title">编辑快捷拨号</string>
+    <string name="quick_dial_name">名称（可留空，默认显示号码）</string>
+    <string name="quick_dial_phone">电话号码</string>
+    <string name="quick_dial_avatar">头像</string>
+    <string name="quick_dial_avatar_hint">图片优先；没有图片时用下面的颜色圆底 + 名字首字</string>
+    <string name="quick_dial_pick_contact">用通讯录头像</string>
+    <string name="quick_dial_pick_image">从相册选图片</string>
+    <string name="quick_dial_clear_image">去掉图片，改用颜色</string>
+    <string name="quick_dial_color">颜色</string>
+    <string name="quick_dial_phone_empty">请先填写电话号码</string>
+    <string name="quick_dial_remove_confirm">移除「%1$s」？</string>
+    <string name="quick_dial_full">最多只能放 %1$d 个快捷拨号</string>
+    <string name="quick_dial_image_failed">图片读取失败，请换一张</string>
+    <string name="quick_dial_edit">编辑快捷拨号</string>
+    <string name="quick_dial_remove">移除这个快捷拨号</string>
+    <string name="quick_dial_speak">试听播报</string>
+    <string name="quick_dial_speak_hint">（主页点击时念这个名字）</string>
+    <string name="voice_off_hint">语音播报已关闭，可在「设置 → 语音播报」里打开</string>
+
+    <string name="not_installed">未安装该应用</string>
+    <string name="wx_not_installed">未安装微信</string>
+
+    <!-- 微信小程序 / 视频号直达（入口在「主页功能块 → 添加什么？」里） -->
+
+    <string name="channels_link_title">视频号直达</string>
+    <string name="channels_link_hint">怎么拿链接：在微信里打开想看的视频 → 点右上角「…」→「复制链接」，再回到这里粘贴。\n\n保存后点主页「视频号」会先尝试用这条链接直达；微信如果不接受（多数版本对外部链接只给「在微信中打开」的提示），就会用无障碍自动进入视频号——所以要真正省事，建议同时开着无障碍服务。</string>
+    <string name="channels_link_example">https://channels.weixin.qq.com/...</string>
+    <string name="channels_link_paste">粘贴</string>
+    <string name="channels_link_paste_empty">剪贴板里没有内容</string>
+    <string name="channels_link_test">试一试</string>
+    <string name="channels_link_save">保存</string>
+    <string name="channels_link_clear">清除</string>
+    <string name="channels_link_empty">请先粘贴视频号分享链接</string>
+    <string name="channels_link_saved">已保存，回主页点「视频号」试试</string>
+    <string name="channels_link_cleared">已清除</string>
+    <string name="channels_link_test_ok">已尝试用微信打开，能看到视频就说明链接有效</string>
+    <string name="channels_link_test_fail">没能打开，请检查链接是否复制完整</string>
+    <string name="channels_bridge_waiting">正在打开微信…</string>
+    <string name="channels_bridge_fallback">链接没能直开，正在自动进入视频号</string>
+
+    <string name="wx_mini_title">微信小程序</string>
+    <string name="wx_mini_hint">已添加 %1$d/%2$d 个\n按住一行拖动可排序，也可以用 ↑ ↓ 微调\n加好后到「主页功能块 → 添加功能块 → 微信小程序」就能放到桌面上</string>
+    <string name="wx_mini_add">添加小程序</string>
+    <string name="wx_mini_add_title">添加小程序</string>
+    <string name="wx_mini_edit_title">编辑小程序</string>
+    <string name="wx_mini_name">名称（显示在桌面色块上）</string>
+    <string name="wx_mini_name_empty">请先填写名称</string>
+    <string name="wx_mini_target">小程序标识或链接</string>
+    <string name="wx_mini_target_hint">可以填小程序分享口令（#小程序://…）、小程序后台的「明文链接」、视频号分享链接（channels.weixin.qq.com）、gh_ 开头的原始ID，或 wx 开头的 AppID</string>
+    <string name="wx_mini_target_example">gh_xxxxxxxx@app</string>
+    <string name="wx_mini_target_empty">请先填写小程序标识或链接</string>
+    <string name="wx_mini_tip">不确定填什么就点下面的「试一试」，能打开就说明填对了；打不开可以换一种，或者用小程序后台「隐私与安全 → 明文 Scheme 拉起此小程序」里那条链接。</string>
+    <string name="wx_mini_paste">粘贴</string>
+    <string name="wx_mini_paste_empty">剪贴板里没有内容</string>
+    <string name="wx_shortcut_missing">这个小程序快捷方式不见了，请回微信里重新「添加到桌面」</string>
+    <string name="wx_mini_passcode_fallback">口令要在微信里点击才有效，已打开微信，请把「#小程序://」口令发给任意聊天后再点</string>
+    <string name="wx_mini_test">试一试</string>
+    <string name="wx_mini_remove_confirm">删除小程序「%1$s」？</string>
+    <string name="wx_mini_duplicate">这个标识已经添加过了</string>
+    <string name="wx_mini_full">最多只能添加 %1$d 个小程序</string>
+    <string name="wx_mini_default_name">微信小程序</string>
+    <string name="wx_mini_fallback">没能直接打开「%1$s」，已打开微信，请在小程序列表里点开</string>
+    <string name="wx_mini_pick_title">选择小程序</string>
+    <string name="wx_mini_pick_hint">有 %1$d 个小程序，点一个就打开</string>
+    <string name="wx_mini_manage">管理小程序</string>
+
+    <!-- 主页功能色块 -->
+    <string name="block_add">添加功能块</string>
+    <string name="block_tools">常用工具</string>
+    <string name="block_maintain">手机维护</string>
+    <string name="block_sub_badge">▾</string>
+    <string name="block_more">更多</string>
+    <string name="block_more_badge">+%1$d</string>
+    <string name="block_more_hint">还有 %1$d 个，点一个就打开</string>
+    <string name="block_in_more">「更多」里</string>
+    <string name="block_kind_builtin">内置功能</string>
+    <string name="block_kind_app">其他应用</string>
+    <string name="block_kind_mini">微信小程序</string>
+    <string name="block_kind_channels">视频号直达</string>
+    <string name="block_kind_shortcut">桌面快捷方式</string>
+    <string name="block_kind_app_row">应用</string>
+    <string name="block_sub_count">含 %1$d 个二级功能</string>
+    <string name="block_sub_none">无二级菜单</string>
+    <string name="block_sub_hint">点一个就执行</string>
+    <string name="block_sub_title">「%1$s」的二级菜单</string>
+    <string name="block_sub_tip">点一项可以把它删掉</string>
+    <string name="block_sub_empty">还没有二级功能</string>
+    <string name="block_sub_add">添加子功能</string>
+    <string name="block_sub_manage">管理二级菜单</string>
+    <string name="block_sub_full">二级菜单最多 %1$d 项</string>
+    <string name="block_sub_remove_confirm">删除「%1$s」？</string>
+    <string name="block_edit_title">编辑功能块</string>
+    <string name="block_remove_confirm">删除色块「%1$s」？</string>
+    <string name="block_delete">删除</string>
+    <string name="block_move_up">上移</string>
+    <string name="block_move_down">下移</string>
+    <string name="block_move_edge">已经到边上了</string>
+    <string name="block_name">名称</string>
+    <string name="block_name_empty">名称不能为空</string>
+    <string name="block_color">颜色</string>
+    <string name="blocks_title">主页功能块</string>
+    <string name="blocks_hint">已用 %1$d 个色块，主页最多放 %2$d 格，超出的收进「更多」\n按顺序排列：按住一行拖动可排序，也可以用 ↑ ↓ 微调</string>
+    <string name="blocks_full">最多只能放 %1$d 个色块，请先删除一个</string>
+    <string name="blocks_add_title">添加什么？</string>
+    <string name="blocks_pick_builtin">选择内置功能</string>
+    <string name="blocks_pick_app">选择应用（打勾＝已添加）</string>
+    <string name="blocks_pick_mini">选择小程序（打勾＝已添加）</string>
+    <string name="blocks_apps_apply">确定</string>
+    <string name="blocks_apps_diff">已添加 %1$d 个，移除 %2$d 个</string>
+    <string name="blocks_apps_added">已添加 %1$d 个</string>
+    <string name="blocks_apps_removed">已移除 %1$d 个</string>
+    <string name="blocks_elsewhere">（已在别处）</string>
+    <string name="blocks_no_app">没有找到可添加的应用</string>
+    <string name="blocks_no_mini">还没有添加小程序，点「管理小程序」去添加一个</string>
+    <string name="blocks_no_shortcut">还没有收到桌面快捷方式。\n\n在微信小程序、浏览器或别的应用里点「添加到桌面 / 发送到桌面」，选「长辈助手」确认后，这里就会出现。</string>
+    <string name="blocks_pick_shortcut">选择桌面快捷方式（打勾＝已添加）</string>
+    <!-- 「发送到桌面」确认框（ShortcutPinActivity） -->
+    <string name="pin_title">添加到桌面</string>
+    <string name="pin_message">要把「%1$s」放到桌面上吗？</string>
+    <string name="pin_add">添加</string>
+    <string name="pin_added">已把「%1$s」放到桌面</string>
+    <string name="pin_default_label">桌面快捷方式</string>
+    <string name="pin_failed">没有添加成功，请再试一次</string>
+    <string name="shortcut_open_failed">这个快捷方式已经失效了，请重新「发送到桌面」</string>
+    <string name="blocks_channels_added">已添加「视频号」，接着保存一条视频号分享链接</string>
+    <string name="blocks_channels_link_hint">主页「视频号」会优先用你保存的分享链接直达具体视频，没保存链接时自动用无障碍帮你点进视频号</string>
+    <string name="blocks_builtin_all_used">内置功能都已经在主页上了</string>
+    <string name="blocks_room_limit">位置不够，只添加前 %1$d 个</string>
+    <string name="save">保存</string>
+    <string name="done">完成</string>
+
+    <string name="home_edit_blocks">编辑主页功能</string>
+    <string name="home_delete_block">删除这个色块</string>
+
+    <!-- 老人大键盘拨号 -->
+    <string name="dial_hint">请输入号码</string>
+    <string name="dial_delete">删除</string>
+    <string name="dial_clear">清空</string>
+    <string name="dial_empty">请先输入号码</string>
+    <string name="dial_calling">正在拨打</string>
+
+    <string name="act_channels">视频号</string>
+    <string name="wx_channels_fallback">已打开微信，请在「发现」里点开视频号</string>
+    <string name="wx_channels_failed">没找到微信的「发现」入口，请确认微信已登录</string>
+    <string name="wx_channels_not_found">没找到「视频号」，请到微信「发现」页右上角确认已打开视频号入口</string>
+    <string name="channels_need_accessibility">微信不接受从外部直接打开「视频号」的链接（它只在微信内部认这些链接）。开启无障碍服务后，点「视频号」就能自动帮你点进视频号。</string>
+    <string name="channels_open_wechat">只打开微信</string>
+
+    <string name="quick_action_call">打电话</string>
+    <string name="quick_action_sms">发短信</string>
+
+    <!-- 管理密码（保护高级功能） -->
+    <string name="password_title_bar">管理密码</string>
+    <string name="password_set_title">设置管理密码</string>
+    <string name="password_set_hint">设置 6 位数字密码，用来保护高级功能（功能块管理、设为默认桌面等）。请一定记住，忘记只能重置。</string>
+    <string name="password_confirm_title">再输一次确认</string>
+    <string name="password_confirm_hint">请再输入一遍刚才设置的密码</string>
+    <string name="password_verify_title">请输入管理密码</string>
+    <string name="password_verify_hint">输入 6 位管理密码，才能修改高级设置</string>
+    <string name="password_forgot">忘记密码？</string>
+    <string name="password_ok">确定</string>
+    <string name="password_delete">删除</string>
+    <string name="password_too_short">请先输入密码</string>
+    <string name="password_mismatch">两次输入不一致，请重新设置</string>
+    <string name="password_wrong">密码不对，请重试</string>
+    <string name="password_saved">管理密码已设置</string>
+    <string name="password_cleared">管理密码已清空，下次进入高级设置时重新设置</string>
+    <string name="password_forgot_confirm">确定要重置管理密码吗？重置后会清空当前密码，接着重新设置一个新密码。</string>
+    <string name="password_unlocked">已解锁高级设置</string>
+
+    <!-- 高级设置页 -->
+    <string name="admin_title">高级设置</string>
+    <string name="admin_lock">锁定</string>
+    <string name="admin_locked_toast">已锁定，下次进入需要重新输密码</string>
+    <string name="admin_blocks">主页功能块管理</string>
+    <string name="admin_blocks_hint">增删功能块、添加其他应用（含系统应用）、微信小程序、视频号直达、调整顺序</string>
+    <string name="admin_home">设为手机桌面</string>
+    <string name="admin_home_hint">把「长辈助手」设为手机主屏幕应用；已经是默认桌面时点这里也能换回原来的桌面</string>
+    <string name="admin_home_switch_hint">已经是默认桌面了；如需换回原来的桌面，在系统设置里选其他桌面</string>
+    <string name="admin_perm_group">系统权限</string>
+    <string name="admin_home_is_default">当前已是默认桌面</string>
+    <string name="admin_home_not_default">当前不是默认桌面</string>
+    <string name="admin_accessibility">无障碍服务</string>
+    <string name="admin_accessibility_on">已开启</string>
+    <string name="admin_accessibility_off">未开启，视频号自动导航需要它</string>
+    <string name="admin_dev_admin">设备管理员</string>
+    <string name="admin_dev_admin_on">已开启</string>
+    <string name="admin_dev_admin_off">未开启，重启手机等操作需要它</string>
+    <string name="admin_password">修改管理密码</string>
+    <string name="admin_password_hint">重新设置 6 位数字密码</string>
+    <string name="admin_reset_blocks">恢复默认功能块</string>
+    <string name="admin_reset_blocks_hint">把主页功能块恢复成出厂默认</string>
+    <string name="admin_reset_blocks_confirm">确定把主页功能块恢复成默认吗？当前的自定义设置会被清掉。</string>
+    <string name="admin_reset_blocks_done">已恢复默认功能块</string>
+    <string name="admin_code_tip">忘记管理密码？在拨号盘输入 %1$s 后按「拨打电话」，可以重置密码，也可以连所有设置一起恢复默认</string>
+
+    <!-- 未接来电提醒（回到桌面时弹一次） -->
+    <string name="missed_call_title">未接来电</string>
+    <string name="missed_call_title_multi">%1$d 个未接来电</string>
+    <string name="missed_call_count">共 %1$d 次</string>
+    <string name="missed_call_more">还有 %1$d 个未接来电，可在通话记录里查看</string>
+    <string name="missed_call_back">回拨</string>
+    <string name="missed_call_back_to">回拨给 %1$s</string>
+    <string name="missed_call_got_it">知道了</string>
+    <string name="missed_call_all_got_it">全部知道了</string>
+    <string name="missed_call_unknown">陌生号码</string>
+    <string name="missed_call_announce">%1$s 有未接来电</string>
+    <string name="missed_call_announce_multi">有 %1$d 个未接来电</string>
+    <string name="missed_listener_label">长辈助手（未接来电提醒）</string>
+    <string name="admin_missed">未接来电提醒</string>
+    <string name="admin_missed_on">通知使用权已开启</string>
+    <string name="admin_missed_off">未开启，点这里去开启「通知使用权」</string>
+    <string name="admin_missed_hint">开启后，有未接来电时桌面上会弹提醒，可以直接回拨；长按这一行可以查看抓到的通知原文</string>
+    <string name="admin_missed_on_toast">通知使用权已开启；如需关闭，在系统设置里取消勾选</string>
+    <string name="missed_debug_title">最近抓到的通知</string>
+    <string name="missed_debug_empty">还没有记录。请先开启通知使用权，再让别人打一个未接来电试试。</string>
+    <string name="settings_admin_needed">需管理密码</string>
+
+    <!-- 首页板块顺序（主页三块内容的上下位置） -->
+    <string name="home_section_sos">紧急求助</string>
+    <string name="home_section_grid">功能块</string>
+    <string name="home_section_quick">快捷拨号</string>
+    <string name="settings_home_order">首页板块顺序</string>
+    <string name="settings_home_order_hint">调整主页三块内容的上下位置</string>
+    <string name="settings_home_order_current">当前顺序：%1$s</string>
+    <string name="home_order_title">首页板块顺序</string>
+    <string name="home_order_intro">用 ↑ ↓ 调整主页上「紧急求助 / 功能块 / 快捷拨号」的上下位置，改完立即生效。</string>
+    <string name="home_order_note">注：只改显示位置，不影响功能块本身的内容。</string>
+
+    <!-- 高级设置入口（普通设置页里的卡片） -->
+    <string name="settings_admin_title">高级设置</string>
+    <string name="settings_admin_entry_hint">主页功能块、系统权限、手机桌面、管理密码、恢复默认都在这里</string>
+
+    <!-- 拨号盘重置：一个勾选框 + 确认/取消 -->
+    <string name="dial_reset_title">重置管理密码</string>
+    <string name="dial_reset_message">重置管理密码，勾选后同步将所有设置恢复出厂。</string>
+    <string name="dial_reset_checkbox">同时将所有设置恢复出厂</string>
+    <string name="dial_reset_all_confirm">确定恢复所有设置吗？\n\n主页功能块、快捷拨号、微信小程序、视频号链接、紧急联系人、字号、语音、首页板块顺序都会恢复出厂默认，且无法撤销。</string>
+    <string name="dial_reset_all_confirm_yes">确定恢复</string>
+    <string name="dial_reset_done">管理密码已重置，下次进入高级设置时重新设置</string>
+    <string name="dial_reset_all_done">已重置密码，所有设置已恢复默认</string>
+    <!-- 「*」「#」开头的是运营商服务码，系统会当 MMI 指令处理并弹英文报错，这里直接拦下 -->
+    <string name="dial_service_code">这是服务指令，不能拨打。请检查号码是否正确</string>
+
+    <!-- ========== 语音交互 ========== -->
+    <string name="act_voice">说话</string>
+    <string name="voice_title">请说话</string>
+    <string name="voice_title_listening">正在听…</string>
+    <string name="voice_hint">比如：打电话给儿子</string>
+    <string name="voice_tap_to_speak">点一下说话</string>
+    <string name="voice_listening">我在听，请说…</string>
+    <string name="voice_not_heard">没听清，请再说一次</string>
+    <string name="voice_not_understood">这句话还没学会，请换个说法</string>
+    <string name="voice_need_network">语音识别需要联网，请检查网络</string>
+    <string name="voice_need_mic">说话需要麦克风权限，请在系统设置里打开</string>
+    <string name="voice_no_engine">这台手机没有语音识别服务，请在系统设置里选一个语音输入</string>
+    <string name="voice_error_audio">录音出错了，请再说一次</string>
+    <string name="voice_error_generic">出了点问题，请再说一次</string>
+    <string name="voice_reply_dial">正在打开拨号盘</string>
+    <string name="voice_searching">正在找「%1$s」</string>
+    <string name="voice_contact_missing">没找到这个人，请说通讯录里的名字</string>
+    <string name="voice_calling">正在打给%1$s</string>
+    <string name="voice_pick_contact">要打给谁？</string>
+    <string name="voice_app_missing">没找到这个应用</string>
+    <string name="voice_opening">正在打开%1$s</string>
+    <string name="voice_reply_settings">正在打开设置</string>
+    <string name="voice_reply_clock">正在打开时钟</string>
+    <string name="voice_reply_calendar">正在打开日历</string>
+    <string name="voice_reply_radio">正在打开收音机</string>
+    <string name="voice_no_radio">这台手机没有收音机</string>
+    <string name="voice_time_hour">现在是 %1$d 点</string>
+    <string name="voice_time_hour_minute">现在是 %1$d 点 %2$d 分</string>
+    <string name="voice_torch_on">灯已打开</string>
+    <string name="voice_torch_off">灯已关闭</string>
+    <string name="voice_torch_already_on">灯本来就开着</string>
+    <string name="voice_torch_already_off">灯本来就关着</string>
+    <string name="voice_no_flash">这台手机没有闪光灯</string>
+    <string name="voice_volume_max">已经是最大声了</string>
+    <string name="voice_volume_min">已经是最小声了</string>
+    <string name="voice_volume_done">声音已调好</string>
+    <string name="voice_font_max">字已经最大了</string>
+    <string name="voice_font_done">字已放大</string>
+    <string name="voice_reply_channels">正在打开视频号</string>
+    <string name="voice_sos_speaking">需要帮助吗？三秒后自动求救</string>
+    <string name="voice_sos_title">正在发出求救</string>
+    <string name="voice_sos_body">会把位置发给家人，并拨打紧急联系电话</string>
+    <string name="voice_sos_cancel">我没事，取消</string>
+    <string name="voice_sos_cancelled">已取消</string>
+
+    <!-- ========== 恰了么？（超时预警） ========== -->
+    <string name="alive_title">恰了么？（超时预警）</string>
+    <string name="alive_hint">手机长时间没人操作时，自动给家人发提醒短信</string>
+    <string name="alive_off">未开启</string>
+    <string name="alive_on">已开启</string>
+    <string name="alive_dialog_title">恰了么？设置</string>
+    <string name="alive_switch">开启超时预警</string>
+    <string name="alive_threshold">多久没操作就提醒</string>
+    <string name="alive_hours">%1$d 小时</string>
+    <string name="alive_phone">预警短信发给</string>
+    <string name="alive_phone_empty">未设置</string>
+    <string name="alive_phone_use_sos">用紧急联系人的号码</string>
+    <string name="alive_pause">暂停提醒</string>
+    <string name="alive_pause_off">不暂停</string>
+    <string name="alive_pause_days">暂停 %1$d 天</string>
+    <string name="alive_paused_until">已暂停到 %1$s</string>
+    <string name="alive_last_active">上次活跃：%1$s</string>
+    <string name="alive_never">还没有记录</string>
+    <string name="alive_need_phone">请先设置接收预警的号码（或先设好紧急联系人）</string>
+    <string name="alive_set_done">已保存</string>
+    <string name="alive_debug_title">恰了么？诊断</string>
+    <string name="alive_debug_next">下次检查：%1$s</string>
+    <string name="alive_debug_none">还没排上检查闹钟</string>
+    <string name="alive_sms_first">【长辈助手】提醒：家里手机已有 %1$d 小时没有操作（上次活跃：%2$s）。如无异常请忽略；若联系不上，请尽快打电话确认。</string>
+    <string name="alive_sms_again">【长辈助手】仍未检测到手机操作，已持续 %1$d 小时。</string>
+    <string name="alive_sms_recover">【长辈助手】已恢复：家里手机刚刚有操作，此前提醒解除。</string>
+    <string name="alive_sms_failed">预警短信没发出去，请检查短信权限</string>
+    <string name="alive_turn_on">开启超时提醒</string>
+    <string name="alive_turn_off">关闭超时提醒</string>
+    <string name="alive_debug_switch">开关：%1$s</string>
+    <string name="alive_debug_last">最后活跃：%1$s（%2$d 小时前）</string>
+    <string name="alive_debug_threshold">阈值：%1$d 小时</string>
+    <string name="alive_debug_count">已发提醒：%1$d 条</string>
+    <string name="alive_debug_last_alert">上次提醒：%1$s</string>
+    <string name="alive_debug_pause">暂停到：%1$s</string>
+    <string name="alive_debug_phone">预警号码：%1$s</string>
+    <string name="alive_debug_accessibility">无障碍：%1$s</string>
+    <string name="alive_debug_acc_off">未开启（检测会不准）</string>
+
+    <!-- ========== 远程设置（子女端） ========== -->
+    <string name="remote_title">远程设置（家人帮改）</string>
+    <string name="remote_admin_entry">远程设置</string>
+    <string name="remote_admin_hint">家人可以在自己的手机上帮你改字号、换功能块</string>
+    <string name="remote_admin_state_unbound">未绑定</string>
+    <string name="remote_admin_state_bound">已绑定，上次同步 %1$s</string>
+    <string name="remote_admin_state_error">已绑定，但有异常</string>
+
+    <string name="remote_state_unbound">还没绑定</string>
+    <string name="remote_state_bound">已绑定</string>
+    <string name="remote_state_unbound_hint">绑定后，家人在自己的手机或电脑上打开服务端页面，就能帮你改设置。绑定只需要做一次。</string>
+
+    <string name="remote_bind_hint">家里人在部署服务端时会得到一个地址和家庭码，填在下面。绑定只需要做一次，之后自动同步。</string>
+    <string name="remote_endpoint_hint">服务地址，例如 https://elder.example.com</string>
+    <string name="remote_code_hint">家庭码，例如 8F2C3D1E</string>
+    <string name="remote_name_hint">这台手机叫什么（给家人看的）</string>
+    <string name="remote_bind">绑定并同步</string>
+    <string name="remote_rebind">重新绑定（会换一把新钥匙）</string>
+    <string name="remote_binding">正在绑定…</string>
+    <string name="remote_sync_now">立即同步</string>
+    <string name="remote_syncing">正在同步…</string>
+    <string name="remote_diag">诊断</string>
+    <string name="remote_unbind">解除绑定</string>
+    <string name="remote_footer">同步搭在「恰了么？」每小时一次的检查上，不额外耗电。改字号这类调整最长约一小时生效；改紧急联系人、换功能块需要你在这台手机上点「同意」。</string>
+
+    <string name="remote_detail_endpoint">服务地址：%1$s</string>
+    <string name="remote_detail_code">家庭码：%1$s</string>
+    <string name="remote_detail_sync">上次同步：%1$s</string>
+    <string name="remote_detail_ok">状态：正常</string>
+    <string name="remote_detail_error">状态：%1$s</string>
+    <string name="remote_detail_pending">有 %1$d 项修改等你确认</string>
+
+    <string name="remote_bad_endpoint">地址不对。公网地址必须以 https:// 开头</string>
+    <string name="remote_bad_code">家庭码不对，应该是 4–16 位字母或数字</string>
+    <string name="remote_bind_ok">绑定成功</string>
+    <string name="remote_sync_ok">同步完成</string>
+    <string name="remote_sync_pending">同步完成，有 %1$d 项修改等你确认</string>
+    <string name="remote_busy">正在同步，请稍等</string>
+    <string name="remote_auth_failed">绑定已失效，请重新绑定</string>
+    <string name="remote_err_notfound">找不到服务，请检查地址和家庭码</string>
+    <string name="remote_err_http">服务端返回错误（%1$s）</string>
+    <string name="remote_err_network">连不上服务（%1$s）</string>
+    <string name="remote_err_unknown">同步没成功，请稍后再试</string>
+
+    <string name="remote_unbind_confirm">解除后家人就改不了这台手机的设置了。以后再绑需要重新填地址和家庭码。</string>
+    <string name="remote_unbind_done">已解除绑定</string>
+
+    <!-- 危险指令的本机确认 -->
+    <string name="remote_confirm_title">家人要改一项设置</string>
+    <string name="remote_confirm_hint">同意后立刻生效。如果这不是家里人安排的，请点「不同意」。</string>
+    <string name="remote_confirm_yes">同意</string>
+    <string name="remote_confirm_no">不同意</string>
+    <string name="remote_confirm_applied">已修改</string>
+    <string name="remote_confirm_failed">没有改成，请稍后再试</string>
+    <string name="remote_msg_title">家人留言</string>
+    <string name="remote_msg_ok">知道了</string>
+
+    <string name="remote_cmd_sos">把紧急联系人改成 %1$s（%2$s）</string>
+    <string name="remote_cmd_blocks">换掉主页的功能块（%1$d 个）</string>
+    <string name="remote_cmd_quick">换掉快捷拨号的联系人（%1$d 位）</string>
+    <string name="remote_cmd_unknown">一项修改（%1$s）</string>
+
+    <string name="remote_diag_title">远程设置 · 诊断</string>
+    <string name="remote_diag_unbound_state">绑定状态：%1$s</string>
+    <string name="remote_diag_device">设备标识：%1$s</string>
+    <string name="remote_diag_endpoint">服务地址：%1$s</string>
+    <string name="remote_diag_code">家庭码：%1$s</string>
+    <string name="remote_diag_rev">已执行到修订号：%1$d</string>
+    <string name="remote_diag_error">最近错误：%1$s</string>
+    <string name="remote_diag_pending">待确认指令：%1$d 条</string>
+    <string name="remote_diag_next">下次检查（顺带同步）：%1$s</string>
+
+    <!-- 跌倒检测 -->
+    <string name="fall_title">跌倒检测</string>
+    <string name="fall_channel">跌倒提醒</string>
+    <string name="fall_admin_on">已开启 · 摔落 1 分钟没人捡起就响铃提醒，3 分钟没回应就短信并拨打家人电话；家人来电接通后通话结束即自动解除</string>
+    <string name="fall_admin_off">未开启，点这里设置</string>
+    <string name="fall_hint">手机摔落约 1 分钟没人捡起时响铃提醒机主；再 3 分钟没回应，就按「恰了么？」的号码给家人发短信并直接拨打，家人回拨时自动接听。家人来电接通超过 15 秒，通话结束后预警自动解除。电量低时响铃改为间歇，省电留给求助通话。掉到床、沙发等软面上可能检测不到。</string>
+    <string name="fall_menu_on">开启跌倒检测</string>
+    <string name="fall_menu_off">关闭跌倒检测</string>
+    <string name="fall_sms_failed">需要「发短信」权限，摔落后才能通知家人</string>
+    <string name="fall_need_phone">预警短信沿用「恰了么？」的号码，请先设置</string>
+    <string name="fall_set_done">跌倒检测已开启</string>
+    <string name="fall_sms_device">家里的</string>
+    <string name="fall_sms">【长辈助手】提醒：%1$s手机可能摔落在地，已 %2$d 分钟没有捡起或回应。请尽快打电话确认（来电会自动接听）。</string>
+    <string name="fall_sms_battery">【长辈助手】提醒：%1$s手机可能摔落在地，已 %2$d 分钟没有捡起或回应。当前电量约 %3$d%%，预警响铃会持续耗电，请尽快打电话确认（来电会自动接听）。</string>
+    <string name="fall_battery_warning">注意：预警期间的响铃、震动和拨打电话都会明显耗电。如果手机原本电量就低，可能撑不到家人来电就自动关机，届时短信、电话都发不出去。请尽量保持电量充足；预警短信里会带上当前电量，家人看到电量偏低请第一时间联系。</string>
+    <string name="fall_notif_title">手机好像摔了</string>
+    <string name="fall_notif_text">一段时间没有捡起，点这里确认没事</string>
+    <string name="fall_act_title">手机摔了吗？</string>
+    <string name="fall_act_sub">手机检测到刚才可能摔落在地上，一直没被捡起。</string>
+    <string name="fall_act_ok">我没事</string>
+    <string name="fall_act_ok_hint">点这里告诉家人你没事</string>
+    <string name="fall_act_watch">正在确认是否已被捡起…</string>
+    <string name="fall_act_countdown">%1$d 秒后将通知家人</string>
+    <string name="fall_act_called">已短信家人并拨打其电话</string>
+    <string name="fall_act_sent">已通知家人，请留意来电</string>
+    <string name="fall_act_no_phone">未设置家人电话，没能发出短信</string>
+    <string name="fall_act_picked">如果是家人捡起了手机，点下面的按钮即可解除</string>
+    <string name="fall_tts">手机好像摔了，没事的话请点我没事</string>
+</resources>

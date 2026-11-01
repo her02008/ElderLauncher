@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  拨号盘「重置管理密码」弹窗里的勾选框。
+  用 CheckBox 而不是列表单选：勾不勾一眼看得懂，按钮上还有一次「确认」兜着。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="4dp">
+
+    <CheckBox
+        android:id="@+id/cbResetAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:text="@string/dial_reset_checkbox"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/font_large" />
+
+</LinearLayout>

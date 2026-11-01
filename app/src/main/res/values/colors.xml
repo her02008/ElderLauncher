@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_main">#FFF7EED6</color>
+    <color name="bg_card">#FFFFFFFF</color>
+    <color name="text_primary">#FF2B2B2B</color>
+    <color name="text_secondary">#FF666666</color>
+    <color name="text_white">#FFFFFFFF</color>
+
+    <color name="btn_phone">#FFE74C3C</color>
+    <color name="btn_contacts">#FF3498DB</color>
+    <color name="btn_douyin">#FF000000</color>
+    <color name="btn_wxapp">#FF07C160</color>
+    <color name="btn_channels">#FFFA9D3B</color>
+    <color name="btn_clean">#FF9B59B6</color>
+    <color name="btn_reboot">#FFE67E22</color>
+    <color name="btn_torch">#FFF1C40F</color>
+    <color name="btn_wifi">#FF1ABC9C</color>
+    <color name="btn_data">#FF3498DB</color>
+    <color name="btn_sos">#FFC0392B</color>
+    <!-- 跌倒检测红字警告的浅红底（btn_sos 约 8% 透明度） -->
+    <color name="fall_warn_bg">#14C0392B</color>
+    <color name="btn_call">#FF07C160</color>
+    <!-- 语音色块：玫红，和电话的橙红、短信的绿都能一眼分开 -->
+    <color name="btn_voice">#FFD63384</color>
+    <color name="btn_settings">#FF7F8C8D</color>
+
+    <color name="sos_bg">#FFC0392B</color>
+    <color name="divider">#FFE0D8C0</color>
+    <color name="accent">#FFE67E22</color>
+</resources>

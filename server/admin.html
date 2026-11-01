@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>长辈助手 · 远程设置</title>
+<style>
+  :root { --bg:#F5F4F0; --card:#fff; --line:#E2E0D8; --text:#2C2C2A; --muted:#6B6A64;
+          --accent:#1D9E75; --danger:#C0392B; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+         font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+         font-size:15px; line-height:1.6; padding:16px 14px 60px; }
+  h1 { font-size:18px; font-weight:600; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px;
+          padding:14px; margin-bottom:12px; }
+  .card h2 { font-size:15px; font-weight:600; margin:0 0 10px; }
+  label { display:block; font-size:13px; color:var(--muted); margin:10px 0 4px; }
+  input, select, textarea { width:100%; padding:10px 12px; border:1px solid var(--line);
+          border-radius:10px; font-size:15px; font-family:inherit; background:#fff; color:var(--text); }
+  textarea { min-height:90px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; }
+  button { padding:10px 14px; border:1px solid var(--line); background:#fff; color:var(--text);
+           border-radius:10px; font-size:14px; font-family:inherit; cursor:pointer; }
+  button:active { background:#EFEEE8; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  button.danger { color:var(--danger); border-color:#E9C6C2; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .row > button { flex:1 1 0; min-width:88px; }
+  .kv { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--line); font-size:14px; }
+  .kv:last-child { border-bottom:none; }
+  .kv span:first-child { color:var(--muted); }
+  .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px;
+          background:#E1F5EE; color:#0F6E56; flex:0 0 auto; }
+  .pill.off { background:#F1EFE8; color:#6B6A64; }
+  .pill.warn { background:#FAEEDA; color:#854F0B; }
+  .cmd { font-size:13px; padding:8px 10px; background:#F5F4F0; border-radius:8px; margin-bottom:6px;
+         font-family:ui-monospace,Menlo,Consolas,monospace; word-break:break-all; }
+  .hint { font-size:12px; color:var(--muted); margin-top:6px; line-height:1.5; }
+  .danger-zone summary { color:var(--danger); font-size:14px; cursor:pointer; }
+  #log { font-size:12px; color:var(--muted); white-space:pre-wrap; margin-top:8px; min-height:18px; }
+  .dev { display:flex; align-items:center; gap:10px; padding:10px 0;
+         border-bottom:1px dashed var(--line); cursor:pointer; }
+  .dev:last-child { border-bottom:none; }
+  .dev.active { background:#E1F5EE; margin:0 -8px; padding:10px 8px;
+                border-radius:10px; border-bottom-color:transparent; }
+  .dev-main { flex:1 1 auto; min-width:0; }
+  .dev-name { font-size:15px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .dev-meta { font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden;
+              text-overflow:ellipsis; font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .dev-x { padding:6px 9px; font-size:15px; line-height:1; color:var(--muted);
+           border-color:transparent; background:transparent; flex:0 0 auto; }
+  .form[hidden] { display:none; }
+</style>
+</head>
+<body>
+
+<h1>长辈助手 · 远程设置</h1>
+<div class="sub">指令发出去后，长辈手机下一次同步（最长约 1 小时）才会生效。危险项需要老人在手机上点同意。</div>
+
+<div class="card">
+  <h2>我的家庭</h2>
+  <div id="deviceList"></div>
+  <div class="row">
+    <button class="primary" id="btnAddDevice">＋ 添加长辈手机</button>
+    <button id="btnRefresh">刷新当前</button>
+  </div>
+
+  <div class="form" id="addForm" hidden>
+    <label>服务地址</label>
+    <input id="epInput" placeholder="https://elder.example.com">
+    <label>家庭码</label>
+    <input id="codeInput" placeholder="8 位大写字母数字">
+    <label>备注名（可留空，用手机自报的名字）</label>
+    <input id="aliasInput" placeholder="例如：妈妈">
+    <div class="row">
+      <button class="primary" id="btnSaveDevice">保存</button>
+      <button id="btnCancelAdd">取消</button>
+    </div>
+    <div class="hint">家庭码在长辈手机的「高级设置 → 远程设置」里，绑定时会显示。同一个家庭码可以给多个子女用，互不影响。</div>
+  </div>
+
+  <div id="log"></div>
+</div>
+
+<div class="card">
+  <h2 id="deviceTitle">长辈手机</h2>
+  <div id="state"><div class="kv"><span>状态</span><span>未连接</span></div></div>
+</div>
+
+<div class="card">
+  <h2>日常设置（立即执行）</h2>
+
+  <label>字号</label>
+  <div class="row">
+    <button data-op="set_font" data-args='{"level":0}'>标准</button>
+    <button data-op="set_font" data-args='{"level":1}'>大</button>
+    <button data-op="set_font" data-args='{"level":2}'>超大</button>
+  </div>
+
+  <label>语音播报</label>
+  <div class="row">
+    <button data-op="set_voice" data-args='{"on":true}'>打开</button>
+    <button data-op="set_voice" data-args='{"on":false}'>关闭</button>
+  </div>
+
+  <label>「还在吗」超时预警</label>
+  <div class="row">
+    <button data-op="set_alive" data-args='{"on":true,"hours":12}'>开 · 12 小时</button>
+    <button data-op="set_alive" data-args='{"on":true,"hours":24}'>开 · 24 小时</button>
+    <button data-op="set_alive" data-args='{"on":false}'>关闭</button>
+  </div>
+
+  <label>首页板块顺序</label>
+  <div class="row">
+    <button data-op="set_home_order" data-args='{"order":["sos","grid","quick"]}'>求助 / 功能块 / 拨号</button>
+    <button data-op="set_home_order" data-args='{"order":["quick","grid","sos"]}'>拨号 / 功能块 / 求助</button>
+  </div>
+
+  <label>给长辈留一句话（桌面弹大字提示）</label>
+  <textarea id="msg" style="min-height:60px" placeholder="比如：晚上记得吃药"></textarea>
+  <div class="row"><button data-op="push_msg" data-from="msg">发送提示</button></div>
+</div>
+
+<div class="card">
+  <h2>待执行指令</h2>
+  <div id="pendingCmds"><div class="hint">没有待执行指令</div></div>
+  <div class="row"><button class="danger" id="btnClear">清空未执行</button></div>
+</div>
+
+<div class="card">
+  <details class="danger-zone">
+    <summary>危险操作（需要老人在手机上确认）</summary>
+
+    <label>紧急联系人</label>
+    <input id="sosName" placeholder="姓名，例如：儿子">
+    <input id="sosPhone" placeholder="号码" style="margin-top:8px">
+    <div class="row"><button class="danger" id="btnSos">提交修改</button></div>
+
+    <label>主页功能块（JSON）</label>
+    <textarea id="blocks" placeholder='[{"id":"…","type":"BUILTIN","action":"PHONE","label":"拨打电话","color":-13158601}]'></textarea>
+    <div class="row"><button class="danger" id="btnBlocks">提交色块</button></div>
+
+    <label>快捷拨号（JSON）</label>
+    <textarea id="quick" placeholder='[{"name":"儿子","phone":"13800000000","photoUri":"","iconPath":"","color":0}]'></textarea>
+    <div class="row"><button class="danger" id="btnQuick">提交拨号</button></div>
+
+    <div class="hint">不知道 JSON 长什么样？先在同名手机的高级设置里改一次，再从导出的配置里复制。
+      手机上有管理密码保护，这里改完不会绕过它。</div>
+  </details>
+</div>
+
+<script>
+var $ = function (id) { return document.getElementById(id); };
+var base = '';
+
+var DEV_KEY = 'elder_devices';
+var ACTIVE_KEY = 'elder_active';
+
+/* ---------------- 设备清单（存在浏览器本地） ----------------
+ *
+ * 每台长辈手机在清单里的身份是**自己生成的 id**，不是家庭码。
+ * 原因：家庭码只在同一个服务端内唯一。你既管着 Workers 上的妈妈（码 8888），
+ * 又管着自家 NAS 上的丈母娘（码也是 8888）是完全可能的，
+ * 要是拿 code 当主键，后加的一台会把前一台的地址覆盖掉。
+ * 判重仍然用「地址 + 码」，但标识、切换、删除都走 id。
+ */
+
+function newDeviceId() {
+  return 'd_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+/** 判重键：同一个服务端上的同一个家庭码才算同一台 */
+function deviceKey(endpoint, code) {
+  return String(endpoint || '').replace(/\/+$/, '').toLowerCase() + '|' + String(code || '').toUpperCase();
+}
+
+function readDevices() {
+  try {
+    var a = JSON.parse(localStorage.getItem(DEV_KEY) || '[]');
+    return Array.isArray(a) ? a : [];
+  } catch (e) { return []; }
+}
+
+function writeDevices(list) {
+  localStorage.setItem(DEV_KEY, JSON.stringify(list));
+}
+
+/** 老清单没有 id 的补一个，返回是否有改动 */
+function ensureIds(list) {
+  var changed = false;
+  for (var i = 0; i < list.length; i++) {
+    if (!list[i].id) {
+      list[i].id = newDeviceId();
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+function findById(id) {
+  if (!id) return null;
+  var list = readDevices();
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].id === id) return list[i];
+  }
+  return null;
+}
+
+/** 加一台，或者更新已存在的同一台（同地址 + 同码）。返回落库后的那条。 */
+function upsertDevice(dev) {
+  var list = readDevices();
+  ensureIds(list);
+  var key = deviceKey(dev.endpoint, dev.code);
+  for (var i = 0; i < list.length; i++) {
+    if (deviceKey(list[i].endpoint, list[i].code) === key) {
+      list[i].endpoint = dev.endpoint;
+      list[i].code = dev.code;
+      if (dev.alias) list[i].alias = dev.alias;
+      if (dev.reportedName) list[i].reportedName = dev.reportedName;
+      writeDevices(list);
+      return list[i];
+    }
+  }
+  var item = {
+    id: dev.id || newDeviceId(),
+    endpoint: dev.endpoint,
+    code: dev.code,
+    alias: dev.alias || ''
+  };
+  list.push(item);
+  writeDevices(list);
+  return item;
+}
+
+function removeDevice(id) {
+  var target = findById(id);
+  if (!target) return;
+  if (!confirm('从列表里移除「' + deviceName(target) + '」（' + target.code + '）？\n\n' +
+               '只是从这台浏览器里去掉，不会影响长辈手机上的绑定。')) return;
+
+  var list = readDevices().filter(function (d) { return d.id !== id; });
+  writeDevices(list);
+
+  if (localStorage.getItem(ACTIVE_KEY) === id) {
+    localStorage.removeItem(ACTIVE_KEY);
+    base = '';
+    if (list.length) {
+      activate(list[0].id);
+    } else {
+      renderDevices();
+      clearState();
+      showAddForm(true);
+    }
+  } else {
+    renderDevices();
+  }
+}
+
+function deviceName(d) {
+  return (d && (d.alias || d.reportedName || '未命名')) || '未命名';
+}
+
+function renderDevices() {
+  var list = readDevices();
+  var active = localStorage.getItem(ACTIVE_KEY) || '';
+  var box = $('deviceList');
+
+  if (!list.length) {
+    box.innerHTML = '<div class="hint" style="margin:0">还没有添加长辈手机。点下面的按钮，填服务地址和家庭码。</div>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var d = list[i];
+    var id = d.id || '';
+    var on = id === active;
+    html += '<div class="dev' + (on ? ' active' : '') + '" data-id="' + esc(id) + '">' +
+      '<div class="dev-main">' +
+        '<div class="dev-name">' + esc(deviceName(d)) + '</div>' +
+        '<div class="dev-meta">' + esc(d.code) + ' · ' + esc(shortHost(d.endpoint)) + '</div>' +
+      '</div>' +
+      (on ? '<span class="pill">当前</span>' : '') +
+      '<button class="dev-x" data-del="' + esc(id) + '" aria-label="移除">×</button>' +
+    '</div>';
+  }
+  box.innerHTML = html;
+}
+
+function shortHost(ep) {
+  return String(ep || '').replace(/^https?:\/\//, '');
+}
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function activate(id) {
+  var d = findById(id);
+  if (!d) return;
+  localStorage.setItem(ACTIVE_KEY, id);
+  // 地址只在这里拼一次：切换设备 = 换 base 前缀，其余代码完全不知道有几位长辈
+  base = String(d.endpoint).replace(/\/+$/, '') + '/a/' + String(d.code).toUpperCase();
+  $('deviceTitle').textContent = '长辈手机 · ' + deviceName(d);
+  renderDevices();
+  loadState();
+}
+
+function clearState() {
+  $('deviceTitle').textContent = '长辈手机';
+  $('state').innerHTML = '<div class="kv"><span>状态</span><span>未连接</span></div>';
+  $('pendingCmds').innerHTML = '<div class="hint">没有待执行指令</div>';
+  log('请先添加一台长辈手机');
+}
+
+function showAddForm(on) {
+  $('addForm').hidden = !on;
+  if (on) {
+    if (!$('epInput').value) $('epInput').value = (location.origin.indexOf('http') === 0 ? location.origin : '');
+    $('codeInput').focus();
+  }
+}
+
+function saveDevice() {
+  var ep = $('epInput').value.trim().replace(/\/+$/, '');
+  var code = $('codeInput').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  var alias = $('aliasInput').value.trim();
+
+  if (!ep || !code) { log('地址和家庭码都要填'); return; }
+  if (code.length < 4) { log('家庭码看起来不对，至少 4 位'); return; }
+
+  var item = upsertDevice({ endpoint: ep, code: code, alias: alias });
+  $('codeInput').value = '';
+  $('aliasInput').value = '';
+  showAddForm(false);
+  activate(item.id);
+}
+
+/* ---------------- 接口 ---------------- */
+
+function log(t) { $('log').textContent = t; }
+
+function api(path, method, body) {
+  if (!base) { log('请先添加一台长辈手机'); return Promise.reject(new Error('no base')); }
+  var opt = { method: method || 'GET', headers: {} };
+  if (body !== undefined) {
+    opt.headers['Content-Type'] = 'application/json';
+    opt.body = JSON.stringify(body);
+  }
+  return fetch(base + path, opt).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}
+
+function fmtTime(ms) {
+  if (!ms) return '从未';
+  var d = new Date(ms);
+  var p = function (n) { return n < 10 ? '0' + n : '' + n; };
+  return (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
+
+function loadState() {
+  var activeId = localStorage.getItem(ACTIVE_KEY) || '';
+  api('/api/state').then(function (d) {
+    // 请求还在路上时用户切了设备，这份数据属于上一台，丢掉别渲染
+    if (localStorage.getItem(ACTIVE_KEY) !== activeId) return;
+    var s = d.state || {};
+
+    /* 手机自报的名字比「未命名」友好，顺手存下来 */
+    if (d.bind && d.bind.name) {
+      var dev = findById(activeId);
+      if (dev && dev.reportedName !== d.bind.name) {
+        dev.reportedName = d.bind.name;
+        writeDevices(readDevices().map(function (x) { return x.id === activeId ? dev : x; }));
+        renderDevices();
+        $('deviceTitle').textContent = '长辈手机 · ' + deviceName(dev);
+      }
+    }
+
+    var rows = [
+      ['绑定设备', d.bind ? (d.bind.name || '已绑定') : '还没绑定'],
+      ['机型', d.bind ? (d.bind.model || '-') : '-'],
+      ['最后同步', fmtTime(s.ackAt)],
+      ['上次活跃', fmtTime(s.lastActive)],
+      ['版本', s.version || '-'],
+      ['电量', s.battery ? s.battery + '%' : '-'],
+      ['还在吗', s.alive || '-'],
+      ['待老人确认', (s.pending || 0) + ' 条']
+    ];
+    var html = '';
+    for (var i = 0; i < rows.length; i++) {
+      html += '<div class="kv"><span>' + esc(rows[i][0]) + '</span><span>' + esc(rows[i][1]) + '</span></div>';
+    }
+    $('state').innerHTML = html;
+    renderPending(d.cmds || []);
+    log('已连接 · 修订号 ' + (d.rev || 0) + ' · ' + (d.cmds || []).length + ' 条待执行');
+  }).catch(function (e) { log('连接失败：' + e.message); });
+}
+
+function renderPending(cmds) {
+  if (!cmds.length) { $('pendingCmds').innerHTML = '<div class="hint">没有待执行指令</div>'; return; }
+  var html = '';
+  for (var i = 0; i < cmds.length; i++) {
+    var c = cmds[i];
+    html += '<div class="cmd">' + esc(c.op) + ' ' + esc(JSON.stringify(c.args || {})) +
+      (c.danger ? ' <span class="pill warn">需确认</span>' : '') + '</div>';
+  }
+  $('pendingCmds').innerHTML = html;
+}
+
+function send(op, args) {
+  api('/api/cmd', 'POST', { op: op, args: args }).then(function () {
+    log('已下发：' + op);
+    loadState();
+  }).catch(function (e) { log('下发失败：' + e.message); });
+}
+
+/* ---------------- 事件 ---------------- */
+
+$('deviceList').addEventListener('click', function (e) {
+  var del = e.target.closest('[data-del]');
+  if (del) {
+    e.stopPropagation();
+    removeDevice(del.getAttribute('data-del'));
+    return;
+  }
+  var row = e.target.closest('[data-id]');
+  if (row) activate(row.getAttribute('data-id'));
+});
+
+$('btnAddDevice').addEventListener('click', function () { showAddForm($('addForm').hidden); });
+$('btnCancelAdd').addEventListener('click', function () {
+  showAddForm(false);
+  if (!readDevices().length) log('还没有添加长辈手机');
+});
+$('btnSaveDevice').addEventListener('click', saveDevice);
+$('btnRefresh').addEventListener('click', function () {
+  if (base) loadState(); else log('请先添加一台长辈手机');
+});
+
+document.querySelectorAll('button[data-op]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var args = JSON.parse(b.getAttribute('data-args'));
+    if (b.getAttribute('data-from')) {
+      var v = $(b.getAttribute('data-from')).value.trim();
+      if (!v) { log('内容不能为空'); return; }
+      args = { text: v, seconds: 8 };
+    }
+    send(b.getAttribute('data-op'), args);
+  });
+});
+
+$('btnClear').addEventListener('click', function () {
+  api('/api/clear', 'POST', {}).then(function () { log('已清空'); loadState(); })
+    .catch(function (e) { log('失败：' + e.message); });
+});
+
+$('btnSos').addEventListener('click', function () {
+  var n = $('sosName').value.trim(), p = $('sosPhone').value.trim();
+  if (!n || !p) { log('姓名和号码都要填'); return; }
+  send('set_sos', { name: n, phone: p });
+});
+
+function sendJson(id, op, wrap) {
+  var raw = $(id).value.trim();
+  if (!raw) { log('内容不能为空'); return; }
+  var arr;
+  try { arr = JSON.parse(raw); } catch (e) { log('JSON 格式不对：' + e.message); return; }
+  if (!Array.isArray(arr)) { log('需要一个数组'); return; }
+  var args = {}; args[wrap] = arr;
+  send(op, args);
+}
+
+$('btnBlocks').addEventListener('click', function () { sendJson('blocks', 'set_blocks', 'blocks'); });
+$('btnQuick').addEventListener('click', function () { sendJson('quick', 'set_quick', 'contacts'); });
+
+/* ---------------- 启动 ---------------- */
+
+/* 从旧版单设备升级：老的两个键搬成一条记录 */
+(function migrate() {
+  var list = readDevices();
+  if (!list.length) {
+    var ep = localStorage.getItem('elder_endpoint');
+    var cd = localStorage.getItem('elder_code');
+    if (ep && cd) {
+      var item = upsertDevice({ endpoint: ep, code: String(cd).toUpperCase(), alias: '' });
+      localStorage.setItem(ACTIVE_KEY, item.id);
+      return;
+    }
+  }
+  if (ensureIds(list)) writeDevices(list);
+
+  /* 老版的 ACTIVE 存的是家庭码，转成 id；找不到对应设备就清掉 */
+  var act = localStorage.getItem(ACTIVE_KEY);
+  if (act && !findById(act)) {
+    var cur = readDevices();
+    var hit = null;
+    for (var i = 0; i < cur.length; i++) {
+      if (cur[i].code === String(act).toUpperCase()) { hit = cur[i]; break; }
+    }
+    if (hit) localStorage.setItem(ACTIVE_KEY, hit.id);
+    else localStorage.removeItem(ACTIVE_KEY);
+  }
+})();
+
+/* 从 /a/CODE 打开时，直接把这台设备加进列表 */
+(function fromUrl() {
+  var m = location.pathname.match(/\/a\/([A-Za-z0-9]{4,16})\/?$/);
+  if (!m) return;
+  var item = upsertDevice({ endpoint: location.origin, code: m[1].toUpperCase(), alias: '' });
+  localStorage.setItem(ACTIVE_KEY, item.id);
+})();
+
+(function boot() {
+  var list = readDevices();
+  var active = localStorage.getItem(ACTIVE_KEY) || '';
+  if (!findById(active) && list.length) active = list[0].id;
+
+  renderDevices();
+  if (active && findById(active)) {
+    activate(active);
+  } else {
+    showAddForm(true);
+    log('');
+    $('deviceList').innerHTML = '<div class="hint" style="margin:0">还没有添加长辈手机。点下面的按钮，填服务地址和家庭码。</div>';
+  }
+})();
+</script>
+</body>
+</html>

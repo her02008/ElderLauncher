@@ -1,0 +1,46 @@
+# ---------------- Android / Gradle ----------------
+.gradle/
+build/
+app/build/
+captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.hprof
+local.properties
+
+# 签名文件永远不要进仓库
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+
+# ---------------- IDE ----------------
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.externalNativeBuild/
+.cxx/
+
+# ---------------- 服务端运行时数据 ----------------
+# Node 版把 bind/cfg 写在这个目录，含 token，属于私有数据
+server/node/data/
+server/node/store.json
+server/node/store.json.tmp
+server/node/.env
+
+# ---------------- 系统垃圾 ----------------
+.DS_Store
+Thumbs.db
+*.log
+
+# ---------------- 工具工作区 ----------------
+# .workbuddy 里只保留沉淀下来的项目记忆，其余（会话缓存等）不入库
+.workbuddy/*
+!.workbuddy/memory/
+!.workbuddy/memory/**
+app/release/

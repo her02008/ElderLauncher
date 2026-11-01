@@ -1,0 +1,29 @@
+# Cloudflare Workers 部署配置
+#
+# 首次部署前要做两件事：
+#   1. wrangler kv namespace create ELDER
+#      把返回的 id 填到下面 kv_namespaces.id（不是名称，是那串 32 位 hex）
+#   2. wrangler deploy
+#
+# admin.html 通过 [[rules]] 的 Text 模块内嵌进 worker（worker.js 里 import）。
+# 如果你的 wrangler 版本报「Cannot find module ../admin.html」，
+# 说明用的是很老的版本，升级一下：npm i -g wrangler@latest
+
+name = "elder-remote"
+main = "workers/worker.js"
+compatibility_date = "2024-09-23"
+
+# 静态文件（admin.html）按纯文本模块打包
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = true
+
+[[kv_namespaces]]
+binding = "ELDER"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# 可选：绑定自定义域名比 workers.dev 在国内更稳
+# [[routes]]
+# pattern = "elder.example.com"
+# custom_domain = true

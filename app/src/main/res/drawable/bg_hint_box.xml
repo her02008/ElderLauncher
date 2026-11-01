@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 提示说明内容的浅灰底圆角框：和可点击的功能入口一眼区分开 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#0F000000" />
+    <corners android:radius="8dp" />
+</shape>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  语音说「救命」后的确认页（全屏红）。
+
+  为什么要这一层：SOS 会给紧急联系人发短信 + 打电话。电视里演一句、家人聊天提一句
+  「救命」都会误触发，代价太大。倒计时**默认执行**是刻意的——老人真出事时喊完
+  可能没力气再点按钮，所以不能要求他确认；3 秒是留给误触发的撤销窗口。
+  ⚠️ 不要把它「优化」成直接执行，也不要延长到 10 秒以上。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#C62828"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="28dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="24dp">
+
+    <TextView
+        android:id="@+id/tvSosCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textColor="#FFFFFF"
+        android:textSize="64sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/voice_sos_title"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/voice_sos_body"
+        android:textColor="#FFCDD2"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/btnSosCancel"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_sos_cancel"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/voice_sos_cancel"
+        android:textColor="#C62828"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</LinearLayout>

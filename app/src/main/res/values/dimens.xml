@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="font_normal">18sp</dimen>
+    <dimen name="font_large">22sp</dimen>
+    <dimen name="font_xlarge">28sp</dimen>
+
+    <dimen name="title_normal">26sp</dimen>
+    <dimen name="title_large">32sp</dimen>
+    <dimen name="title_xlarge">40sp</dimen>
+
+    <dimen name="icon_normal">56dp</dimen>
+    <dimen name="icon_large">64dp</dimen>
+    <dimen name="icon_xlarge">72dp</dimen>
+
+    <dimen name="btn_label_normal">18sp</dimen>
+    <dimen name="btn_label_large">22sp</dimen>
+    <dimen name="btn_label_xlarge">26sp</dimen>
+
+    <dimen name="card_radius">20dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="avatar_size">72dp</dimen>
+    <dimen name="avatar_row">64dp</dimen>
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  未接来电弹窗（回到桌面时弹一次，见 MissedCallDialog）。
+  一个人时：只有一行 + 底下一颗大「回拨」；
+  多个人时：逐行列出（最多 3 行），每行自带一个绿色回拨按钮，底部只有「全部知道了」。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="18dp">
+
+    <TextView
+        android:id="@+id/tvMissedTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/title_normal"
+        android:textStyle="bold"
+        tools:text="未接来电" />
+
+    <LinearLayout
+        android:id="@+id/listMissed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/tvMissedMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="还有 2 个未接来电，可在通话记录里查看"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/missedActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal" />
+
+</LinearLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_card_round"
+    android:padding="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/rowAvatar"
+        android:layout_width="@dimen/avatar_row"
+        android:layout_height="@dimen/avatar_row"
+        android:scaleType="fitCenter"
+        android:importantForAccessibility="no"
+        tools:src="@drawable/bg_avatar_placeholder" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rowName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_large"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            tools:text="儿子" />
+
+        <TextView
+            android:id="@+id/rowPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary"
+            tools:text="13800138000" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnMoveUp"
+        android:layout_width="40dp"
+        android:layout_height="44dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_arrow_up"
+        android:tint="@color/text_secondary"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/block_move_up" />
+
+    <ImageButton
+        android:id="@+id/btnMoveDown"
+        android:layout_width="40dp"
+        android:layout_height="44dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_arrow_down"
+        android:tint="@color/text_secondary"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/block_move_down" />
+
+    <ImageButton
+        android:id="@+id/btnRemove"
+        android:layout_width="40dp"
+        android:layout_height="44dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_remove"
+        android:tint="@color/text_secondary"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/block_delete" />
+
+</LinearLayout>

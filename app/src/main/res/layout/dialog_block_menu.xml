@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tvMenuTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:textSize="@dimen/title_normal"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        tools:text="常用工具" />
+
+    <TextView
+        android:id="@+id/tvMenuHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/block_sub_hint"
+        android:textSize="@dimen/font_normal"
+        android:textColor="@color/text_secondary" />
+
+    <!-- 条目多时（例如「更多」里有几十个应用）由外层限高 + 滚动，保证弹窗不会超出屏幕 -->
+    <ScrollView
+        android:id="@+id/svSub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/llSubContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnSubCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minHeight="56dp"
+        android:text="@string/cancel"
+        android:textSize="@dimen/font_large" />
+
+</LinearLayout>

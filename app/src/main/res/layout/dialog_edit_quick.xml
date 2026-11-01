@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quick_dial_name"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/text_secondary" />
+
+        <EditText
+            android:id="@+id/etQuickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:maxLength="12"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:textSize="@dimen/font_large" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/quick_dial_phone"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/text_secondary" />
+
+        <EditText
+            android:id="@+id/etQuickPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textSize="@dimen/font_large" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/quick_dial_avatar"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/text_secondary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/quick_dial_avatar_hint"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/ivQuickPreview"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:scaleType="fitCenter"
+                android:background="@drawable/bg_avatar_placeholder"
+                android:importantForAccessibility="no"
+                tools:src="@drawable/bg_avatar_placeholder" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnPickContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="44dp"
+                    android:text="@string/quick_dial_pick_contact"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btnPickImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:minHeight="44dp"
+                    android:text="@string/quick_dial_pick_image"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btnClearImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:minHeight="44dp"
+                    android:text="@string/quick_dial_clear_image"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--
+          试听播报：念的就是主页点这个联系人时播的名字（名字空着就念号码）。
+          整行可点，比小图标好按；用 LinearLayout 而不是 Button，
+          和 dialog_quick_action 一样避开 MaterialButton 吞自定义样式的问题。
+        -->
+        <LinearLayout
+            android:id="@+id/rowQuickSpeak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_volume"
+                android:tint="@color/accent"
+                android:importantForAccessibility="no" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/quick_dial_speak"
+                android:textSize="@dimen/font_normal"
+                android:textStyle="bold"
+                android:textColor="@color/accent" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:gravity="end"
+                android:text="@string/quick_dial_speak_hint"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/quick_dial_color"
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/text_secondary" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/llQuickColors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+    </LinearLayout>
+</ScrollView>

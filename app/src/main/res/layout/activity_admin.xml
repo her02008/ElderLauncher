@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  高级设置聚合页：只有通过管理密码后才进得来（入口在普通设置页的「高级设置」卡片）。
+  把「会改变桌面形态 / 涉及系统权限」的项集中在这里，日常项仍留在普通设置页。
+
+  视觉规则（和提示内容区分开）：
+  - 功能入口 = 「彩色图标 + 加粗标题（+ 当前状态小字）+ 右侧箭头」的整行，可点、有波纹
+  - 提示说明 = 浅灰圆角框（AdminHintBox）里的小字，不可点，不抢视线
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/cancel" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="@string/admin_title"
+            android:textSize="@dimen/title_normal"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
+
+        <TextView
+            android:id="@+id/btnLock"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/admin_lock"
+            android:textColor="@color/btn_contacts"
+            android:textSize="@dimen/font_normal" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
+
+            <!-- 主页功能块管理 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/rowAdminBlocks"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_apps"
+                            app:tint="@color/accent"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            style="@style/AdminEntryTitle"
+                            android:text="@string/admin_blocks" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/admin_blocks_hint" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 系统权限：默认桌面 / 无障碍 / 设备管理员 / 未接来电 / 恰了么？ -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_perm_group"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary" />
+
+                    <!-- 手机桌面 -->
+                    <LinearLayout
+                        android:id="@+id/rowAdminHome"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_home"
+                            app:tint="@color/btn_contacts"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/AdminEntryTitle"
+                                android:text="@string/admin_home" />
+
+                            <TextView
+                                android:id="@+id/tvAdminHomeState"
+                                style="@style/AdminEntryState"
+                                tools:text="当前不是默认桌面" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/admin_home_hint" />
+
+                    <!-- 无障碍 -->
+                    <LinearLayout
+                        android:id="@+id/rowAdminAccessibility"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_accessibility"
+                            app:tint="@color/btn_voice"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/AdminEntryTitle"
+                                android:text="@string/admin_accessibility" />
+
+                            <TextView
+                                android:id="@+id/tvAdminAccessibilityState"
+                                style="@style/AdminEntryState"
+                                tools:text="未开启，视频号自动导航需要它" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <!-- 设备管理员 -->
+                    <LinearLayout
+                        android:id="@+id/rowAdminDeviceAdmin"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/btn_clean"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/AdminEntryTitle"
+                                android:text="@string/admin_dev_admin" />
+
+                            <TextView
+                                android:id="@+id/tvAdminDeviceAdminState"
+                                style="@style/AdminEntryState"
+                                tools:text="未开启，重启手机等操作需要它" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <!-- 未接来电 -->
+                    <LinearLayout
+                        android:id="@+id/rowAdminMissed"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_phone"
+                            app:tint="@color/btn_phone"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/AdminEntryTitle"
+                                android:text="@string/admin_missed" />
+
+                            <TextView
+                                android:id="@+id/tvAdminMissedState"
+                                style="@style/AdminEntryState"
+                                tools:text="未开启，点这里去开启「通知使用权」" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/admin_missed_hint" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/divider" />
+
+                    <!-- 恰了么？：手机长时间没人操作就给家人发提醒短信 -->
+                    <LinearLayout
+                        android:id="@+id/rowAdminAlive"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_clock"
+                            app:tint="@color/btn_wifi"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/AdminEntryTitle"
+                                android:text="@string/alive_title" />
+
+                            <TextView
+                                android:id="@+id/tvAdminAliveState"
+                                style="@style/AdminEntryState"
+                                tools:text="未开启，点这里设置" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/alive_hint" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 远程设置：家属在自己的服务端上改这台手机 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/rowAdminRemote"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_link"
+                            app:tint="@color/btn_channels"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/AdminEntryTitle"
+                                android:text="@string/remote_admin_entry" />
+
+                            <TextView
+                                android:id="@+id/tvAdminRemoteState"
+                                style="@style/AdminEntryState"
+                                android:text="@string/remote_admin_state_unbound" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/remote_admin_hint" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 跌倒检测：手机摔落没人捡 → 先提醒机主，再短信家人 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/rowAdminFall"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_fall_warn"
+                            app:tint="@color/btn_sos"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/AdminEntryTitle"
+                                android:text="@string/fall_title" />
+
+                            <TextView
+                                android:id="@+id/tvAdminFallState"
+                                style="@style/AdminEntryState"
+                                tools:text="未开启，点这里设置" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/fall_hint" />
+
+                    <!-- 耗电风险的红字警告：预警本身会耗电，极端情况撑不到家人来电就关机 -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="10dp"
+                        android:background="@color/fall_warn_bg"
+                        android:text="@string/fall_battery_warning"
+                        android:textColor="@color/btn_sos"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 密码与恢复默认 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/rowAdminPassword"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_lock"
+                            app:tint="@color/btn_contacts"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            style="@style/AdminEntryTitle"
+                            android:text="@string/admin_password" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/admin_password_hint" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/divider" />
+
+                    <LinearLayout
+                        android:id="@+id/rowAdminResetBlocks"
+                        style="@style/AdminEntryRow"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/AdminEntryIcon"
+                            android:src="@drawable/ic_restore"
+                            app:tint="@color/btn_sos"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            style="@style/AdminEntryTitle"
+                            android:text="@string/admin_reset_blocks"
+                            android:textColor="@color/btn_sos" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/AdminHintBox"
+                        android:text="@string/admin_reset_blocks_hint" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvAdminCodeTip"
+                style="@style/AdminHintBox"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                tools:text="忘记管理密码？在拨号盘输入 *#0454#* 后按「拨打电话」，可以重置密码，也可以连所有设置一起恢复默认" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
