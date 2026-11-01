@@ -16,6 +16,11 @@ local.properties
 *.keystore
 keystore.properties
 signing.properties
+# 例外：仓库自带一个**公开密码的测试签名**（signing/elder-launcher.jks）。
+# 目的是让「本地构建」和「GitHub Actions 构建」签出来的包签名一致，
+# 否则 CI 每次都用随机生成的 debug key，手机上装过旧包就再也盖不上。
+# 这个 key 只能用于自己装/test，别用来上架商店；要正式签名请用 signing.properties（见 README）。
+!signing/elder-launcher.jks
 
 # ---------------- IDE ----------------
 .idea/

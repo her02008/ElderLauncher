@@ -126,10 +126,37 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 末位自动 +1 并写回文件**（`gradle tasks`、`clean` 这类任务不动它）。设置页「关于」显示的版本
 就是从这里读进 `BuildConfig` 的。想跳号直接改文件。
 
-### Release 包
+### 签名（重要，别忽略）
 
-`assembleRelease` 没配签名，产出的是 unsigned APK（不能直接安装）。要分发就自己加
-`signingConfigs`——`keystore.properties` 已在 `.gitignore` 里，别把密钥提上来。
+目前所有 APK（本地构建、Actions 构建、Release 里的）都用仓库内**同一个固定测试签名**：
+
+```
+signing/elder-launcher.jks
+别名 elderlauncher    密码 elderlauncher    有效期 30 年
+SHA-256  92:5F:E7:59:30:04:A9:6C:21:C5:AC:BD:91:C1:E4:2A:54:47:51:EF:48:AC:E3:F2:E6:FD:49:2B:94:D4:10:AC
+```
+
+**为什么要把密钥提交进仓库**：CI 每次跑都是全新虚拟机，`~/.android/debug.keystore` 不存在，
+AGP 会自己随机生成一个 debug key —— 于是每次构建的签名都不同，手机上装着上一版就再也盖不上，
+报 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`，只能卸载重装（设置全丢）。固定一个仓库内的 key，
+本地和 CI 签出来的包才能互相覆盖升级。CI 里有一个「核对签名指纹」步骤，指纹对不上会直接失败。
+
+> 这是**公开密码的测试签名**，只能自己装着用：不要用它上架应用商店，也别拿它签需要防伪的东西
+> （任何人拿到仓库都能签一个同包名的应用）。
+
+**换成你自己的正式签名**：在项目根目录放 `signing.properties`（已被 `.gitignore` 排除）：
+
+```properties
+storeFile=signing/my-release.jks
+storePassword=******
+keyAlias=******
+keyPassword=******
+```
+
+`assembleRelease` 会自动改用它。注意**换签名等于换了身份**：手机上已有的包必须先卸载一次。
+
+⚠️ 从旧版本（每次随机签名的 CI 包 / 本机 debug 包）升级到固定签名的第一个版本，需要
+**卸载重装一次**，之后就不用再动了。
 
 ## 四、服务端（远程设置）
 

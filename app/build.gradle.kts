@@ -63,6 +63,27 @@ if (wantsPackage && !skipVersionBump) {
     logger.lifecycle("[version] 已跳过自增（NO_VERSION_BUMP），本次构建版本：$autoVersionName ($autoVersionCode)")
 }
 
+// ---------------- 签名 ----------------
+//
+// 仓库里带了一个**固定**的测试签名 `signing/elder-launcher.jks`（别名 elderlauncher，
+// storePassword = keyPassword = "elderlauncher"）。它是故意提交进来的，原因：
+//
+//   CI 每次跑都是全新虚拟机，`~/.android/debug.keystore` 不存在，AGP 会**自己随机生成**一个，
+//   于是每次构建出来的包签名都不一样 → 手机上装着上一版就再也盖不上，报
+//   INSTALL_FAILED_UPDATE_INCOMPATIBLE。用一个仓库内的固定 key，本地和 CI 签出来的包才一致，
+//   才能一直覆盖升级、不丢数据。
+//
+// 想换成自己的正式签名（上架/长期分发）：在**根目录**放 signing.properties（已被 .gitignore 排除）：
+//   storeFile=signing/my-release.jks   # 相对项目根目录
+//   storePassword=***
+//   keyAlias=***
+//   keyPassword=***
+// 存在它的时候 release 就用它签；不存在就用上面那个仓库内的测试 key。
+val repoKeystore = rootProject.file("signing/elder-launcher.jks")
+val repoKeyAlias = "elderlauncher"
+val repoKeyPassword = "elderlauncher"
+val signingPropsFile = rootProject.file("signing.properties")
+
 android {
     namespace = "com.elder.launcher"
     compileSdk = 34
@@ -76,10 +97,39 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
+    signingConfigs {
+        if (repoKeystore.exists()) {
+            create("repoTest") {
+                storeFile = repoKeystore
+                storePassword = repoKeyPassword
+                keyAlias = repoKeyAlias
+                keyPassword = repoKeyPassword
+            }
+        }
+        if (signingPropsFile.exists()) {
+            val sp = Properties().apply { signingPropsFile.inputStream().use { load(it) } }
+            create("userRelease") {
+                storeFile = rootProject.file(sp.getProperty("storeFile"))
+                storePassword = sp.getProperty("storePassword")
+                keyAlias = sp.getProperty("keyAlias")
+                keyPassword = sp.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
+        debug {
+            // 显式指定，别用 AGP 默认那个每次随机生成的 debug.keystore
+            if (repoKeystore.exists()) signingConfig = signingConfigs.getByName("repoTest")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = when {
+                signingPropsFile.exists() -> signingConfigs.getByName("userRelease")
+                repoKeystore.exists() -> signingConfigs.getByName("repoTest")
+                else -> null
+            }
         }
     }
     compileOptions {

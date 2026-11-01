@@ -68,6 +68,22 @@ jobs:
           fi
           gradle assembleDebug --console=plain --no-daemon --stacktrace
 
+      # 签名必须每次一致，否则手机上装过旧版就再也盖不上（INSTALL_FAILED_UPDATE_INCOMPATIBLE）。
+      # 期望值就是仓库里 signing/elder-launcher.jks 的证书指纹；换了签名文件记得同步改这里。
+      - name: 核对签名指纹
+        run: |
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          AS=$(ls -d "$ANDROID_HOME/build-tools/"*/ | sort -V | tail -1)
+          "${AS}apksigner" verify --print-certs "$APK" | grep -E "DN|SHA-256"
+          FP=$("${AS}apksigner" verify --print-certs "$APK" \
+                | sed -n 's/.*SHA-256 digest: //p' | head -1 | tr -d ':' | tr 'A-Z' 'a-z')
+          EXPECT=925fe7593004a96c21c5acbd91c1e42a544751ef48ace3f2e6fd492b94d410ac
+          if [ "$FP" != "$EXPECT" ]; then
+            echo "::error::签名指纹 $FP 与仓库内 signing/elder-launcher.jks 期望值不一致，这个包装到手机上会覆盖失败"
+            exit 1
+          fi
+          echo "签名指纹一致：$FP"
+
       - name: 读取产物版本号
         id: ver
         run: |
